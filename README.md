@@ -3,6 +3,10 @@
 ## Organization & Name Scheme
 
 ## Version Control Procedures
+git will be used for version control, with our repository on github
+### Git Workflow
+https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow
+
 
 ## The Tool Stack 
 
