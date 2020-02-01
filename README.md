@@ -3,7 +3,7 @@
 ## Organization & Name Scheme
 Default django project organization.
 
-Try and keep filenames to one word and either use camel case, or dashes.
+Ty and keep filenames to one word and either use camel case, or dashes.
 
 ## Version Control Procedures
 
@@ -40,10 +40,12 @@ For CSS we can make a custom style sheet, or we can do custom css embedded in ou
 We could also use a CSS framework such as Bootstrap https://react-bootstrap.github.io/getting-started/introduction
 
 ## Build Instructions
+To run the webpage on a local server go to src and run: 
+
+$ python manage.py runserver
 
 ## Unit Testing Instructions
 
 ## System Testing Instructions
 
 ## Other Notes
-
