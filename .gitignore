@@ -1,3 +1,5 @@
 docs/.~lock.ProjectPlan.docx#
 docs/.~lock.ProjectRequirements.docx#
 docs/.~lock.**
+
+*.pyc
