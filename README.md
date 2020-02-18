@@ -66,3 +66,5 @@ Unit testing instructions will appear here once we are far enough into the proje
 System testing instructions will appear here once we are far enough into the project.
 
 ## Other Notes
+
+Scrum board [Scrum board](https://docs.google.com/spreadsheets/d/115-6lCkCsZA2XjLZDjx7ftg_P1KPQyFkSXc2TrXL4D8/edit#gid=348128126)
