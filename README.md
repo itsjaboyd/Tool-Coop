@@ -71,7 +71,7 @@ System testing instructions will appear here once we are far enough into the pro
 * High fidelity prototype files are located in the src/template folder, which includes a home, inventory, and tool checkout page.
 * Low fidelity wireframe is found in the docs/diagrams folder.
 * Screenshots that include our Github issues page and srum bored are located in the docs/phase2screenshots folder.
-    - Scrum board [Scrum board](https://docs.google.com/spreadsheets/d/115-6lCkCsZA2XjLZDjx7ftg_P1KPQyFkSXc2TrXL4D8/edit?usp=sharing)
+    - [Scrum board](https://docs.google.com/spreadsheets/d/115-6lCkCsZA2XjLZDjx7ftg_P1KPQyFkSXc2TrXL4D8/edit?usp=sharing)
 
 
 
