@@ -68,3 +68,9 @@ System testing instructions will appear here once we are far enough into the pro
 ## Other Notes
 
 Scrum board [Scrum board](https://docs.google.com/spreadsheets/d/115-6lCkCsZA2XjLZDjx7ftg_P1KPQyFkSXc2TrXL4D8/edit?usp=sharing)
+
+##Ian's TODO
+set up virtual environment for the django project to make running on beanstock easier
+or manage requirements.txt manually
+
+set up tool stack so that everything is ready for development to actuallys start
