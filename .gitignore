@@ -3,3 +3,4 @@ docs/.~lock.ProjectRequirements.docx#
 docs/.~lock.**
 
 *.pyc
+.DS_Store
