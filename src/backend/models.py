@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class ToolType(models.Model):
     type_name = models.CharField(max_length=100)
     description = models.TextField()
-    image = models.ImageField(default='default.jpeg', upload_to='profile_pics')
+    image = models.ImageField(default='default.jpeg', upload_to='tool_pics')
 
     def __str__(self):
         return f'{self.type_name} Profile'
