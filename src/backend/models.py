@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.shortcuts import reverse
 # Create your models here.
 
 # Create your models here.
@@ -7,10 +8,13 @@ class ToolType(models.Model):
     type_name = models.CharField(max_length=100)
     description = models.TextField()
     image = models.ImageField(default='default.jpeg', upload_to='tool_pics')
-
+    slug = models.SlugField()
     def __str__(self):
         return f'{self.type_name}'
-    
+    def get_absolute_url(self):
+        return reverse("product", kwargs={'slug':self.slug})
+    def get_available(self):
+        return self.tool_set.all().filter(is_available=True)
 
 
 class Tool(models.Model):
