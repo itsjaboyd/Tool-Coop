@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .view import InventoryListView
+from .views import InventoryListView
 from . import views
 
 urlpatterns = [
