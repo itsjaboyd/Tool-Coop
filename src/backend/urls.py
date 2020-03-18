@@ -1,12 +1,13 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .view import InventoryListView
-from . import views
+from .views import inventory_list, index, checkoutpage, productpage
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('inventory/', InventoryListView.as_view(), name='inventory'),
+    path('', index, name='index'),
+    path('inventory/', inventory_list, name='inventory-page'),
+    path('products/', productpage, name='product-page'),
+    path('checkout/', checkoutpage, name='checkout-page'),
 ] 
 
 if settings.DEBUG:
