@@ -7,6 +7,8 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('inventory/', InventoryListView.as_view(), name='inventory'),
+    path('contact/', views.contact, name='contact_us'),
+    path('product/', views.product, name='product'),
 ] 
 
 if settings.DEBUG:

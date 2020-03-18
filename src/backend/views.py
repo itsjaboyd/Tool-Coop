@@ -15,9 +15,9 @@ class InventoryListView(ListView):
     context_object_name = 'tooltypes'
 
 
-def product(request, tool_id):
-    # find the tool through the tool_id
-    tool = Tool.objects.get(pk=tool_id)
+def product(request):
+    # find the tool through the tool_id parameter
+    tool = Tool.objects.get(pk=1)
     toolType = tool.tool_type
 
     context = {
@@ -27,3 +27,8 @@ def product(request, tool_id):
 
     return render(request, 'backend/product.html', context)
 
+def contact(request):
+    context = {
+
+    }
+    return render(request, 'backend/contact_us.html', context)
