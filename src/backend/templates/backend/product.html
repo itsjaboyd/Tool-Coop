@@ -16,7 +16,17 @@
     <title>Product</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+        .header {
+            text-align: center;
 
+        }
+        .binfo {
+            margin-top: 20px;
+            padding: 20px;
+        }
+        .ToolPic {
+            width: 400px;
+        }
     </style>
   </head>
 
@@ -64,7 +74,31 @@
     </nav>
 	
 	<main class="container">
-        <h1 class="display-4">Product Page</h1>
+        <div class="header">
+            <h1 class="display-4">Product Page</h1>
+            <p class="lead">Here you will find everything about {{ tool.type_name }}</p>
+        </div>
+
+        <div class="binfo">
+            <div class="row">
+                <div class="column">
+                    <img class="ToolPic" src="../../../media/DefaultTool.jpg" alt="Image not found">
+                </div>
+                <div class="column">
+                    <h4>Description: </h4>
+                    <p>{{ tool_type.description }}</p>
+                    <h4>Availability:</h4>
+                    {% if tool.is_available %}
+                        <p style="color: green">Available</p>
+                    {% else %}
+                        <p style="color: red">Not Available</p>
+
+
+                </div>
+            </div>
+            
+
+        </div>
 
 
 

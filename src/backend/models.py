@@ -37,3 +37,6 @@ class ReservationLogTools(models.Model):
 
     def __str__(self):
         return f'{self.tool.tool_type.type_name} Reservation log tools'
+
+
+
