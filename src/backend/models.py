@@ -19,7 +19,14 @@ class ToolType(models.Model):
         return reverse("add-to-cart", kwargs={
             'slug': self.slug
         })
-
+    def get_remove_tool_from_cart(self):
+        return reverse("remove-tool-from-cart", kwargs={
+            'slug': self.slug
+        })
+    def get_remove_single_from_cart_url(self):
+        return reverse("remove-single-tool-from-cart", kwargs={
+            'slug': self.slug
+        })
     def get_available(self):
         return self.tool_set.all().filter(is_available=True)
 

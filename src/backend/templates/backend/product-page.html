@@ -27,10 +27,7 @@
             <p>{{ object.description }}</p>
             <p>{{ object.get_available | length }}  available</p>
             <!-- <form class="d-flex justify-content-left">
-            
               <input type="number" max="{{ object.get_available | length}}" value="1" aria-label="Search" class="form-control" name='quantity' style="width: 100px">
-              
-
             </form> -->
             <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p" >Add to cart
               <i class="fas fa-shopping-cart ml-1"></i>
