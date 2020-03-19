@@ -6,6 +6,7 @@ from django.views.generic import ListView,DetailView
 from .models import ToolType, OrderItem, Order
 from django.utils import timezone
 from django.contrib import messages
+
 # Create your views here.
 def index(request):
     template = loader.get_template("backend/index.html")
@@ -101,3 +102,4 @@ def remove_single_tool_from_cart(request, slug):
     else:
         messages.info(request, "You do not have an active order.")
         return redirect("product", slug=slug)
+
