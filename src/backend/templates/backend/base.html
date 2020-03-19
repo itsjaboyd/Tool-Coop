@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -5,67 +6,143 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+   
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'backend/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="{% static 'backend/css/mdb.min.css' %}" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="{% static 'backend/css/style.min.css' %}" rel="stylesheet">
+    <style type="text/css">
+      html,
+      body,
+      header,
+      .carousel {
+        height: 60vh;
+      }
 
-    <title>Toolshed!</title>
+      @media (max-width: 740px) {
+
+        html,
+        body,
+        header,
+        .carousel {
+          height: 100vh;
+        }
+      }
+
+      @media (min-width: 800px) and (max-width: 850px) {
+
+        html,
+        body,
+        header,
+        .carousel {
+          height: 100vh;
+        }
+      }
+
+    </style>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <a class="navbar-brand" href="#">Toolshed</a>
-    
-      <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-        <ul class="navbar-nav mr-auto ml-5 mt-2 mt-lg-0">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Check Out Tools</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" href="{% url 'inventory' %}">Inventory</a>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
+      <div class="container">
+  
+        <!-- Brand -->
+        <a class="navbar-brand waves-effect" href="#" target="_blank">
+          <strong class="blue-text">Toolshed</strong>
+        </a>
+  
+        <!-- Collapse -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+  
+        <!-- Links -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  
+          <!-- Left -->
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link waves-effect" href="{% url 'index' %}">Toolshed
+                <span class="sr-only">(current)</span>
+              </a>
             </li>
-			<li class="nav-item active">
-              <a class="nav-link" href="{% url 'contact_us' %}">Contact Us</a>
-          </li>
-        </ul>
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          {% if user.is_authenticated%}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'profile' %}">View Profile</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-          </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'login' %}">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'register' %}">Register</a>
-          </li>
-          {% endif %}
-        </ul>
-      </div>
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'inventory' %}" >Products</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'checkout' %}" >Checkout</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'inventory' %}" >View Inventory</a>
+            </li>
+          </ul>
+  
+          <!-- Right -->
+          <ul class="navbar-nav nav-flex-icons">
+            {% if user.is_authenticated%}
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'profile' %}">View Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'logout' %}" >Logout</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'checkout' %}">
+                <span class="badge red z-depth-1 mr-1"> 1 </span>
+                <i class="fas fa-shopping-cart"></i>
+                <span class="clearfix d-none d-sm-inline-block"> Cart </span>
+              </a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'login' %}" >Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'register' %}" >Register</a>
+            </li>
+            {% endif %}
+          </ul>
+  
+        </div>
+  
 
+      </div>
     </nav>
+    <!-- Navbar -->
+  
     <div class="container">
-      {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-{{message.tags}}"> {{ message }}</div>
-        {% endfor %}
-      {% endif %}
+      <div class="mt-5 pt-4">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            {% endfor %}
+        {% endif %}
+        </div>
+
       {% block content%}
       {% endblock %}
 
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+   <!-- SCRIPTS -->
+  <!-- JQuery -->
+  <script type="text/javascript" src="{% static 'backend/js/jquery-3.4.1.min.js' %}"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="{% static 'backend/js/popper.min.js' %}"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="{% static 'backend/js/bootstrap.min.js' %}"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="{% static 'backend/js/mdb.min.js' %}"></script>
+  <!-- Initializations -->
   </body>
 </html>
