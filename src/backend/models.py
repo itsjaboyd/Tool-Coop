@@ -11,8 +11,15 @@ class ToolType(models.Model):
     slug = models.SlugField()
     def __str__(self):
         return f'{self.type_name}'
+
     def get_absolute_url(self):
         return reverse("product", kwargs={'slug':self.slug})
+
+    def get_add_to_cart_url(self):
+        return reverse("add-to-cart", kwargs={
+            'slug': self.slug
+        })
+
     def get_available(self):
         return self.tool_set.all().filter(is_available=True)
 
@@ -26,20 +33,20 @@ class Tool(models.Model):
 
 
 class OrderItem(models.Model):
-    tool = models.ForeignKey(Tool,on_delete=models.CASCADE)
-
+    tool = models.ForeignKey(ToolType,on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
     def __str__(self):
-        return f'{self.tool.tool_type.type_name}'
+        return f'{self.quantity}'
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     items = models.ManyToManyField(OrderItem)
     is_reserved = models.BooleanField(default=False)
     is_checked_out = models.BooleanField(default=False)
-    reservation_date = models.DateTimeField()
-    checkout_date = models.DateTimeField()
-    due_date = models.DateTimeField()
-    checkin_date = models.DateTimeField()
+    reservation_date = models.DateTimeField(null=True)
+    checkout_date = models.DateTimeField(null=True)
+    due_date = models.DateTimeField(null=True)
+    checkin_date = models.DateTimeField(null=True)
 
 
 
