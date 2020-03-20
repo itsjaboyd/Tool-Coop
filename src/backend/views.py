@@ -2,20 +2,18 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import loader
-from django.views.generic import ListView,DetailView
-from .models import ToolType, OrderItem, Order, Tool
+from django.views.generic import ListView,DetailView, View
+from .models import ToolType, OrderItem, Order, Tool,Profile
 from django.utils import timezone
 from django.contrib import messages
+from .forms import CheckoutForm,UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
     template = loader.get_template("backend/index.html")
     return HttpResponse(template.render({}, request))
 
-
-def checkoutpage(request):
-    template = loader.get_template("backend/checkout-page.html")
-    return HttpResponse(template.render({}, request))
 
 class InventoryView(ListView):
     model = ToolType
@@ -36,7 +34,71 @@ class OrderSummaryView(DetailView):
         except ObjectDoesNotExist:
             messages.info(self.request, "You do not have an active order")
             return redirect("/")
-        
+
+class CheckoutView(View):
+    def get(self, *args, **kwargs):
+        order = Order.objects.get(user=self.request.user, is_reserved=False, is_checked_out=False)
+        profile = Profile.objects.get(user=self.request.user)
+        o_form = CheckoutForm()
+        context= {
+            'o_form': o_form,
+            'order': order,
+            'profile': profile
+        }
+        return render(self.request, "backend/checkout-page.html", context)    
+
+    def post(self, *args, **kwargs):
+        form = CheckoutForm(self.request.POST or None)
+        if form.is_valid():
+            print('form is valid')
+            print(str(form['start_date'].value))
+            order = Order.objects.get(user=self.request.user, is_reserved=False, is_checked_out=False)
+            order.reservation_date = form.cleaned_data['start_date']
+            order.due_date = form.cleaned_data['end_date']
+            order.is_reserved = True
+            order.save()
+            messages.info(self.request, "Reservation Sent!")
+            return redirect('index')
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account created for {username}!')
+            return redirect('login')
+    else:
+        form= UserRegisterForm()
+    return render(request, 'backend/register.html', {'form': form})
+
+@login_required
+def profile(request):
+    profile = Profile.objects.get(user=request.user)
+    context = {
+        'profile' : profile,
+    }
+    return render(request, 'backend/profile.html',context)
+
+@login_required
+def update_profile(request):
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+        return redirect('profile')
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.profile)
+    context = {
+        'u_form' : u_form,
+        'p_form' : p_form
+    }
+    return render(request, 'backend/profile-edit.html',context)
+         
 
 def add_to_cart(request, slug):
     tool_type= get_object_or_404(ToolType, slug=slug)

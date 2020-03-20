@@ -1,7 +1,20 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Profile
+from localflavor.us.forms import USStateSelect
+from .models import Order, Profile
+
+class CheckoutForm(forms.Form):
+    start_date = forms.DateField(
+        widget=forms.TextInput(     
+            attrs={'type': 'date'} 
+        )
+    )  
+    end_date = forms.DateField(
+        widget=forms.TextInput(     
+            attrs={'type': 'date'} 
+        )
+    )  
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
