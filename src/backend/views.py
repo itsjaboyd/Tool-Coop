@@ -76,8 +76,10 @@ def register(request):
 @login_required
 def profile(request):
     profile = Profile.objects.get(user=request.user)
+    orders = Order.objects.filter(user=request.user)
     context = {
         'profile' : profile,
+        'orders' : orders,
     }
     return render(request, 'backend/profile.html',context)
 
