@@ -40,9 +40,13 @@ class CheckoutView(View):
         order = Order.objects.get(user=self.request.user, is_reserved=False, is_checked_out=False)
         o_form = CheckoutForm(instance=order)
         p_form = ProfileUpdateForm(instance=order.user.profile)
+        u_form = UserUpdateForm(instance=self.request.user)
+
         context= {
             'o_form': o_form,
-            'p_form': p_form
+            'p_form': p_form,
+            'u_form': u_form,
+            'order': order
         }
         return render(self.request, "backend/checkout-page.html", context)    
 
