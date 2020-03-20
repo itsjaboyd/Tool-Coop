@@ -1,0 +1,38 @@
+{% extends "backend/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+<main class="mt-5 pt-4">
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row no-gutters">
+          <div class="col-md-4">
+            <img src="{{ user.profile.img.url }}" class="card-img" alt="profile image">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+                <h3 class="card-title">Welcome back{{user.first_name }} {{user.first_name }} !</h3>
+
+                <hr>
+                <h5>Your Information:</h5>
+                <br>
+                <div class="text-center">
+                    <h6> <span class="font-weight-bold">username:</span>  {{user.username}}</h6>
+                    <h6><span class="font-weight-bold">email:</span> {{user.email}}</h6>
+                    {% if profile.address2  == None %}
+                    <h6><span class="font-weight-bold">address:</span> {{ profile.address1 }} </h6>
+                    {% else %}
+                    <h6><span class="font-weight-bold">address:</span> {{ profile.address1 }}, {{profile.address2}} </h6>
+                    {% endif %}
+                    <h6>{{ profile.city }}{{ profile.state }}</h6>
+                    <h6><span class="font-weight-bold">phone: </span>{{ profil.phone }}</h6>
+                </div>
+                <hr>
+                <a class="btn btn-primary" href="{% url 'edit-profile' %}"> Update Profile</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+</main>
+{% endblock content %}

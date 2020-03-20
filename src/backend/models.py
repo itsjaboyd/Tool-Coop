@@ -2,9 +2,35 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.shortcuts import reverse
 from django.utils.text import slugify
+from phonenumber_field.modelfields import PhoneNumberField
+from PIL import Image
 # Create your models here.
 
 # Create your models here.
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    address1 = models.CharField(max_length=200, blank=True)
+    address2 = models.CharField(max_length=50, blank=True)
+    city = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=50, blank=True)
+    phone = PhoneNumberField(blank=True)
+    image = models.ImageField(default='default.png', upload_to='profile_pic')
+
+    def __str__(self):
+        return f'{self.user.username} Profile'
+        
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        img = Image.open(self.image.path)
+        if img.height > 300 or img.width > 300:
+            size = (300,300)
+            img.thumbnail(size)
+            img.save(self.image.path)
+
+
 class ToolType(models.Model):
     type_name = models.CharField(max_length=100)
     description = models.TextField()

@@ -1,7 +1,13 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Profile
+from localflavor.us.forms import USStateSelect
+from .models import Order, Profile
+
+class CheckoutForm(forms.ModelForm):
+    class Meta:
+         model = Order
+         fields = ['checkout_date', 'due_date']
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
