@@ -38,23 +38,28 @@ class OrderSummaryView(DetailView):
 class CheckoutView(View):
     def get(self, *args, **kwargs):
         order = Order.objects.get(user=self.request.user, is_reserved=False, is_checked_out=False)
-        o_form = CheckoutForm(instance=order)
-        p_form = ProfileUpdateForm(instance=order.user.profile)
-        u_form = UserUpdateForm(instance=self.request.user)
-
+        profile = Profile.objects.get(user=self.request.user)
+        o_form = CheckoutForm()
         context= {
             'o_form': o_form,
-            'p_form': p_form,
-            'u_form': u_form,
-            'order': order
+            'order': order,
+            'profile': profile
         }
         return render(self.request, "backend/checkout-page.html", context)    
 
     def post(self, *args, **kwargs):
         form = CheckoutForm(self.request.POST or None)
         if form.is_valid():
-            messages.info(request, "Reservation Sent!")
+            print('form is valid')
+            print(str(form['start_date'].value))
+            order = Order.objects.get(user=self.request.user, is_reserved=False, is_checked_out=False)
+            order.reservation_date = form.cleaned_data['start_date']
+            order.due_date = form.cleaned_data['end_date']
+            order.is_reserved = True
+            order.save()
+            messages.info(self.request, "Reservation Sent!")
             return redirect('index')
+
 
 def register(request):
     if request.method == 'POST':

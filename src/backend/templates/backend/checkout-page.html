@@ -19,87 +19,30 @@
           <!--Card-->
           <div class="card">
             <!--Card content-->
-            <form class="card-body">
+            <form class="card-body" method="POST">
               {% csrf_token %}
+              <h5 class="font-weight-bold"><u>Customer Information</u></h5>
               <!--Grid row-->
-              <div class="row">
-
-                <!--Grid column-->
-                <div class="col-md-6 mb-2">
-
-                  <!--firstName-->
-                  <div class="md-form ">
-                    <input type="text" id="firstName" class="form-control">
-                    <label for="firstName" class="">First name</label>
-                  </div>
-
-                </div>
-                <!--Grid column-->
-
-                <!--Grid column-->
-                <div class="col-md-6 mb-2">
-
-                  <!--lastName-->
-                  <div class="md-form">
-                    <input type="text" id="lastName" class="form-control">
-                    <label for="lastName" class="">Last name</label>
-                  </div>
-
-                </div>
-                <!--Grid column-->
-
+              <span class="font-weight-bold"> Address:</span>
+              <div class="text-left ml-3">
+                <p>{{ user.first_name }} {{ user.last_name}}
+                  <br>
+                  {{ profile.address1 }}, {{ profile.address2 }}
+                  <br>
+                  {{ profile.city }}, {{ profile.state }}
+                </p>
               </div>
-              <!--Grid row-->
+              <p>
+                  <span class="font-weight-bold"> Phone:</span> 
+                  {{ profile.phone }} 
+              </p>
+              <a class="btn btn-md btn-primary" href="{% url 'edit-profile' %}"> Update Profile </a>
+              <hr>
+              <h5 class="font-weight-bold"><u>Reservation Info</u></h5>
+              <!--Checkout Info -->
+              {{ o_form|crispy }}
+              
 
-              <!--Username-->
-              <div class="md-form input-group pl-0 mb-5">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon1">@</span>
-                </div>
-                <input type="text" class="form-control py-0" placeholder="Username" aria-describedby="basic-addon1">
-              </div>
-
-              <!--email-->
-              <div class="md-form input-group pl-0 mb-5">
-                <div class="md-form mb-5">
-                  {{ u_form.email}}
-                  <label for="email" class="">Email (optional)</label>
-                </div>
-              </div>
-
-              <!--address-->
-
-             <div class="md-form input-group pl-0 mb-5">
-              <div class="md-form mb-5">
-                {{ p_form.address1 }}
-                <label for="address" class="">Address</label>
-              </div>
-             </div>
-
-              <!--address-2-->
-              <div class="md-form mb-5">
-                {{ p_form.address2 }}
-                <label for="address-2" class="">Address 2 (optional)</label>
-              </div>
-
-              <!--Grid column-->
-              <div class="md-form input-group pl-0 mb-5">
-                <div class="md-form mb-5">
-                  {{ p_form.city }}
-                  <label for="city" class="">City</label>
-                </div>
-               </div>
-              <!--Grid column-->
-               <!--Grid column-->
-              <div class="md-form input-group pl-0 mb-5">
-                <div class="md-form mb-5">
-                  {{ p_form.state }}
-                  <label for="state" class="">State</label>
-                </div>
-               </div>
-              <!--Grid column-->
-
-     
               <hr>
               <!--Grid row-->
               <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
@@ -107,7 +50,7 @@
             </form>
           </div>
 
-          </div>
+        </div>
           <!--/.Card-->
 
 
@@ -119,7 +62,6 @@
           <!-- Heading -->
           <h4 class="d-flex justify-content-between align-items-center mb-3">
             <span class="text-muted">Your cart</span>
-            <span class="badge badge-secondary badge-pill">3</span>
           </h4>
 
           <!-- Cart -->
@@ -135,7 +77,7 @@
             {% endfor %}
             <li class="list-group-item d-flex justify-content-between">
               <span>Total Items</span>
-              <strong>{{ order.items.all | length }}</strong>
+              <strong>{{ order.get_item_total }}</strong>
             </li>
           </ul>
           <!-- Cart -->

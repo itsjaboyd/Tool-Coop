@@ -88,5 +88,11 @@ class Order(models.Model):
     due_date = models.DateTimeField(null=True)
     checkin_date = models.DateTimeField(null=True)
 
-
-
+    def __str__(self):
+        return f'{self.user.username} - {self.checkout_date}'
+    
+    def get_item_total(self):
+        item_count = 0
+        for item in self.items.all():
+            item_count += item.quantity
+        return item_count

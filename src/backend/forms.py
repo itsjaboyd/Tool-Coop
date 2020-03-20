@@ -4,10 +4,17 @@ from django.contrib.auth.forms import UserCreationForm
 from localflavor.us.forms import USStateSelect
 from .models import Order, Profile
 
-class CheckoutForm(forms.ModelForm):
-    class Meta:
-         model = Order
-         fields = ['checkout_date', 'due_date']
+class CheckoutForm(forms.Form):
+    start_date = forms.DateField(
+        widget=forms.TextInput(     
+            attrs={'type': 'date'} 
+        )
+    )  
+    end_date = forms.DateField(
+        widget=forms.TextInput(     
+            attrs={'type': 'date'} 
+        )
+    )  
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
