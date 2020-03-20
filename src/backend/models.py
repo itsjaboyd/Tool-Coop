@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.shortcuts import reverse
+from django.utils.text import slugify
 # Create your models here.
 
 # Create your models here.
@@ -8,10 +9,14 @@ class ToolType(models.Model):
     type_name = models.CharField(max_length=100)
     description = models.TextField()
     image = models.ImageField(default='default.jpeg', upload_to='tool_pics')
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
     def __str__(self):
         return f'{self.type_name}'
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.type_name)
+        super(ToolType, self).save(*args, **kwargs)
+    
     def get_absolute_url(self):
         return reverse("product", kwargs={'slug':self.slug})
 
@@ -42,8 +47,10 @@ class Tool(models.Model):
 class OrderItem(models.Model):
     tool = models.ForeignKey(ToolType,on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
+    is_reserved = models.BooleanField(default=False)
+    is_checked_out = models.BooleanField(default=False)
     def __str__(self):
-        return f'{self.quantity}'
+        return f'{self.tool.type_name} - {self.quantity}'
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import loader
 from django.views.generic import ListView,DetailView
-from .models import ToolType, OrderItem, Order
+from .models import ToolType, OrderItem, Order, Tool
 from django.utils import timezone
 from django.contrib import messages
 
@@ -40,23 +40,30 @@ class OrderSummaryView(DetailView):
 
 def add_to_cart(request, slug):
     tool_type= get_object_or_404(ToolType, slug=slug)
-    order_item = OrderItem.objects.create(tool=tool_type)
-    order_qs = Order.objects.filter(user= request.user, is_checked_out=False, is_reserved=False)
-    if order_qs.exists():
-        order = order_qs[0]
-        if order.items.filter(tool_id=tool_type.id).exists():
-            order_item.quantity += 1
-            order_item.save()
-            messages.info(request, "This item quanity updated.")
-            return redirect("order-summary")
+    if len(tool_type.get_available()) > 0:
+        order_qs = Order.objects.filter(user= request.user, is_checked_out=False, is_reserved=False)
+        if order_qs.exists():
+            order = order_qs[0]
+            if order.items.filter(tool_id=tool_type.id).exists():
+                order_item = order.items.get(tool_id=tool_type.id)
+                order_item.quantity += 1
+                order_item.save()
+                messages.info(request, "This item quanity updated.")
+                return redirect("order-summary")
+            else:
+                order_item = OrderItem.objects.create(tool=tool_type)
+                messages.info(request, "This item was added to your cart.")
+                order.items.add(order_item)
+                return redirect("order-summary")
         else:
-            messages.info(request, "This item was added to your cart.")
+            order_item = OrderItem.objects.create(tool=tool_type)
+            order = Order.objects.create(user=request.user)
             order.items.add(order_item)
+            messages.info(request, "This item was added to your cart.")
             return redirect("order-summary")
     else:
-        order = Order.objects.create(user=request.user)
-        order.items.add(order_item)
-        messages.info(request, "This item was added to your cart.")
+        messages.info(request, "This tool is currently unavailable.")
+        return redirect("order-summary")
     
 
 def remove_tool_from_cart(request, slug):
@@ -65,7 +72,7 @@ def remove_tool_from_cart(request, slug):
     if order_qs.exists():
         order = order_qs[0]
         if order.items.filter(tool_id=tool_type.id).exists():
-            order_item = OrderItem.objects.filter(tool=tool_type, user = request.user, is_checked_out=False, is_reserved=False)
+            order_item = order.items.filter(tool=tool_type)
             order.items.remove(order_item[0])
             order_item.delete()
             messages.info(request, "This tool was removed from your cart.")
@@ -85,14 +92,14 @@ def remove_single_tool_from_cart(request, slug):
     if order_qs.exists():
         order = order_qs[0]
         if order.items.filter(tool_id=tool_type.id).exists():
-            order_item = OrderItem.objects.filter(tool=tool_type, user = request.user, is_checked_out=False, is_reserved=False)
+            order_item = order.items.get(tool=tool_type)
             if order_item.quantity > 1:
                 order_item.quantity -=1
                 order_item.save()
                 messages.info(request, "This tool quantity updated.")
                 return redirect("order-summary")
             else:
-                order.items.remove(order_item[0])
+                order.items.remove(order_item)
                 order_item.delete()
                 messages.info(request, "This tool was removed from your cart.")
                 return redirect("order-summary")
@@ -103,3 +110,27 @@ def remove_single_tool_from_cart(request, slug):
         messages.info(request, "You do not have an active order.")
         return redirect("product", slug=slug)
 
+
+def add_tools(request):
+    tool = get_object_or_404(ToolType, type_name="Axe")
+    for x in range (3):
+        Tool.objects.create(tool_type=tool)
+    tool = get_object_or_404(ToolType, type_name="Chisel")
+    for x in range (7):
+        Tool.objects.create(tool_type=tool)
+    tool = get_object_or_404(ToolType, type_name="Drill")
+    for x in range (5):
+        Tool.objects.create(tool_type=tool)
+    tool = get_object_or_404(ToolType, type_name="Crowbar")
+    for x in range (10):
+        Tool.objects.create(tool_type=tool)
+    tool = get_object_or_404(ToolType, type_name="Circular Saw")
+    for x in range (3):
+        Tool.objects.create(tool_type=tool)
+    tool = get_object_or_404(ToolType, type_name="Hammer")
+    for x in range (15):
+        Tool.objects.create(tool_type=tool)
+    tool = get_object_or_404(ToolType, type_name="File")
+    for x in range (20):
+        Tool.objects.create(tool_type=tool)
+    return redirect('index')
