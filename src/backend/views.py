@@ -14,6 +14,10 @@ def index(request):
     template = loader.get_template("backend/index.html")
     return HttpResponse(template.render({}, request))
 
+def project(request):
+    template = loader.get_template("backend/project-page.html")
+    return HttpResponse(template.render({}, request))
+
 
 class InventoryView(ListView):
     model = ToolType
@@ -45,7 +49,7 @@ class CheckoutView(View):
             'order': order,
             'profile': profile
         }
-        return render(self.request, "backend/checkout-page.html", context)    
+        return render(self.request, "backend/checkout-page.html", context)
 
     def post(self, *args, **kwargs):
         form = CheckoutForm(self.request.POST or None)
@@ -100,7 +104,7 @@ def update_profile(request):
         'p_form' : p_form
     }
     return render(request, 'backend/profile-edit.html',context)
-         
+
 
 def add_to_cart(request, slug):
     tool_type= get_object_or_404(ToolType, slug=slug)
@@ -128,7 +132,7 @@ def add_to_cart(request, slug):
     else:
         messages.info(request, "This tool is currently unavailable.")
         return redirect("order-summary")
-    
+
 
 def remove_tool_from_cart(request, slug):
     tool_type= get_object_or_404(ToolType, slug=slug)
@@ -147,7 +151,7 @@ def remove_tool_from_cart(request, slug):
     else:
         messages.info(request, "You do not have an active order.")
         return redirect("product", slug=slug)
-    
+
 
 
 def remove_single_tool_from_cart(request, slug):

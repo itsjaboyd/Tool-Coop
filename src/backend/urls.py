@@ -2,18 +2,19 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
-from .views import (InventoryView, 
-                    index, 
-                    CheckoutView, 
+from .views import (InventoryView,
+                    index,
+                    CheckoutView,
                     ToolDetailView,
                     add_to_cart,
-                    remove_single_tool_from_cart, 
-                    remove_tool_from_cart, 
+                    remove_single_tool_from_cart,
+                    remove_tool_from_cart,
                     OrderSummaryView,
                     add_tools,
                     register,
                     profile,
-                    update_profile
+                    update_profile,
+                    project,
                     )
 
 
@@ -33,7 +34,8 @@ urlpatterns = [
     path('remove-single-tool-from-cart/<slug>', remove_single_tool_from_cart, name='remove-single-tool-from-cart'),
     path('remove-tool-from-cart/<slug>', remove_tool_from_cart, name='remove-tool-from-cart'),
     path('add-tools/', add_tools, name='add-tools'),
-] 
+    path('project/', project, name='project'),
+]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
