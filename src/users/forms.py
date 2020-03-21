@@ -25,3 +25,12 @@ class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields =['address1', 'address2', 'city', 'state', 'phone']
+		
+class ContactForm(forms.Form):
+    contact_first_name = forms.CharField(required=True)
+    contact_last_name = forms.CharField(required=True)
+    contact_email = forms.EmailField(required=True)
+    content = forms.CharField(
+        required=True,
+        widget=forms.Textarea
+    )

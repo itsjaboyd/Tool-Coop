@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+
 # Create your views here.
 
 def register(request):
@@ -34,4 +35,5 @@ def profile(request):
         'p_form' : p_form
     }
     return render(request, 'users/profile.html',context)
+
 

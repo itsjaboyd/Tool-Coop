@@ -6,6 +6,9 @@ from django.views.generic import ListView,DetailView
 from .models import ToolType, OrderItem, Order, Tool
 from django.utils import timezone
 from django.contrib import messages
+from django.core.mail import EmailMessage
+from django.template.loader import get_template
+from .forms import ContactForm
 
 # Create your views here.
 def index(request):
@@ -134,3 +137,49 @@ def add_tools(request):
     for x in range (20):
         Tool.objects.create(tool_type=tool)
     return redirect('index')
+	
+def contact(request):
+    template = loader.get_template("backend/contact.html")
+    return HttpResponse(template.render({}, request))
+
+    form_class = ContactForm
+
+    if request.method == 'POST':
+        form = form_class(data=request.POST)
+
+        if form.is_valid():
+            contact_first_name = request.POST.get(
+                'contact_first_name'
+            , '')
+            contact_last_name = request.POST.get(
+                'contact_last_name'
+            , '')
+            contact_email = request.POST.get(
+                'contact_email'
+            , '')
+            form_content = request.POST.get('content', '')
+
+            # Email the profile with the
+            # contact information
+            template = get_template('Email_template.txt')
+            context = {
+                'contact_first_name': contact_first_name,
+				'contact_last_name': contact_last_name,
+                'contact_email': contact_email,
+                'form_content': form_content,
+            }
+            content = template.render(context)
+
+            email = EmailMessage(
+                "New contact form submission",
+                content,
+                "Your website" +'',
+                ['youremail@gmail.com'],
+                headers = {'Reply-To': contact_email }
+            )
+            email.send()
+            return redirect('contact')
+
+    return render(request, 'contact', {
+        'form': form_class,
+    })
