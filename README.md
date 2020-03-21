@@ -17,7 +17,7 @@ See "Git Workflow" for more information on how we will use git for our project.
 
 ## Git Workflow
 
-Our project will follow the standard workflow outlined by git.\
+Our project will follow the standard workflow outlined by Git.\
 The official documentation for the procedures can by found on [Atlassian's Website.](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow)
 
 This project will use the _git_ feature branch workflow.\
@@ -32,7 +32,7 @@ As far as branch naming conventions go we should stick to lower case with dashes
 Try and make branch names as descriptive as you can.\
 We also don't need to specify who made the branch in the branch name because git shows who makes which commits.
 
-## The Tool Stack 
+## The Tool Stack
 
 1. [Django backend framework](https://docs.djangoproject.com/en/3.0/)
 2. [Reactjs frontend framework](https://reactjs.org/docs/getting-started.html)
