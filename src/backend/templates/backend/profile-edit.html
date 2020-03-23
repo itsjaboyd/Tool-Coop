@@ -1,16 +1,11 @@
 {% extends "backend/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-    
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title"> {{user.first_name }} {{user.first_name }}</h5>
-            <h5 class="p"> {{user.username}}</h5>
-            <h5 class="p"> {{user.email}}</h5>
-        </div>
-    </div>
-    <div>
-        <form method="POST" enctype="multipart/form-data">
+
+
+<main class="mt-5 pt-4">
+    <divc class="card">
+        <form method="POST" enctype="multipart/form-data" class="card-body">
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4"> Profile Info</legend>
@@ -22,4 +17,5 @@
             </div>
         </form>
     </div>
+</main>
 {% endblock content %}

@@ -1,0 +1,78 @@
+{% extends "backend/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+<main class="mt-5 pt-4">
+  <div class="jumbotron">
+    <h1 class="display-4">Welcome back, {{user.first_name }}!</h1>
+    <hr class="my-4">
+    <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+    <a class="btn btn-primary btn-lg" href="#" role="button">View Products</a>
+  </div>
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row no-gutters">
+          <div class="col-md-4">
+            <img src="{{ user.profile.img.url }}" class="card-img" alt="profile image">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+                <hr>
+                <h5>Your Information:</h5>
+                <br>
+                <h5 class="font-weight-bold"><u>Customer Information</u></h5>
+                <p>
+                  <span class="font-weight-bold"> Username:</span> 
+                  {{ user.username }} 
+                </p>
+                <p>
+                    <span class="font-weight-bold"> email:</span> 
+                    {{ user.email }} 
+                </p>
+                  <span class="font-weight-bold"> Address:</span>
+                  <div class="text-left ml-3">
+                    <p>{{ user.first_name }} {{ user.last_name}}
+                      <br>
+                      {{ profile.address1 }}, {{ profile.address2 }}
+                      <br>
+                      {{ profile.city }}, {{ profile.state }}
+                    </p>
+                  </div>
+                  <p>
+                    <span class="font-weight-bold"> Phone:</span> 
+                    {{ profile.phone }} 
+                </p>
+                <hr>
+                <a class="btn btn-primary" href="{% url 'edit-profile' %}"> Update Profile</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h5 class="card-header">Your Previous Reservations</h5>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Reservation Date</th>
+                <th scope="col">Checkout Date</th>
+                <th scope="col">Due Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in orders %}
+              <tr>
+                <th scope="row"></th>
+                <td>{{ order.reservation_date }}</td>
+                <td>{{ order.checkout_date }}</td>
+                <td>{{ order.due_date }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    
+</main>
+{% endblock content %}
