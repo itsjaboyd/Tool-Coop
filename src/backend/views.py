@@ -6,14 +6,10 @@ from django.views.generic import ListView,DetailView, View
 from .models import ToolType, OrderItem, Order, Tool,Profile
 from django.utils import timezone
 from django.contrib import messages
-<<<<<<< HEAD
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
-from .forms import ContactForm
-=======
-from .forms import CheckoutForm,UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+from .forms import CheckoutForm,UserRegisterForm, UserUpdateForm, ProfileUpdateForm, ContactForm
 from django.contrib.auth.decorators import login_required
->>>>>>> 0f7079ddf71554f0bc08f19b30f10a457997402c
 
 # Create your views here.
 def index(request):
@@ -208,7 +204,6 @@ def add_tools(request):
     for x in range (20):
         Tool.objects.create(tool_type=tool)
     return redirect('index')
-<<<<<<< HEAD
 	
 def contact(request):
     template = loader.get_template("backend/contact.html")
@@ -255,5 +250,3 @@ def contact(request):
     return render(request, 'contact', {
         'form': form_class,
     })
-=======
->>>>>>> 0f7079ddf71554f0bc08f19b30f10a457997402c
