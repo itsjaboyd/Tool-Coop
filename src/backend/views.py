@@ -197,4 +197,46 @@ def add_tools(request):
     tool = get_object_or_404(ToolType, type_name="File")
     for x in range (20):
         Tool.objects.create(tool_type=tool)
+    tool = get_object_or_404(ToolType, type_name="Hammer")
+    for x in range (10):
+        Tool.objects.create(tool_type=tool)
+    tool = get_object_or_404(ToolType, type_name="Hand Saw")
+    for x in range (15):
+        Tool.objects.create(tool_type=tool)
+    tool = get_object_or_404(ToolType, type_name="Hex Keys")
+    for x in range (10):
+        Tool.objects.create(tool_type=tool)
+    tool = get_object_or_404(ToolType, type_name="Jigsaw")
+    for x in range (5):
+        Tool.objects.create(tool_type=tool)
+    tool = get_object_or_404(ToolType, type_name="Level")
+    for x in range (20):
+        Tool.objects.create(tool_type=tool)
+    tool = get_object_or_404(ToolType, type_name="Mallet")
+    for x in range (10):
+        Tool.objects.create(tool_type=tool)
+    tool = get_object_or_404(ToolType, type_name="Pliers")
+    for x in range (20):
+        Tool.objects.create(tool_type=tool)
+    tool = get_object_or_404(ToolType, type_name="Rotary Tool")
+    for x in range (5):
+        Tool.objects.create(tool_type=tool)
+    tool = get_object_or_404(ToolType, type_name="Screwdriver")
+    for x in range (50):
+        Tool.objects.create(tool_type=tool)
+    tool = get_object_or_404(ToolType, type_name="Sledgehammer")
+    for x in range (5):
+        Tool.objects.create(tool_type=tool)
+    tool = get_object_or_404(ToolType, type_name="Soldering Iron")
+    for x in range (8):
+        Tool.objects.create(tool_type=tool)
+    tool = get_object_or_404(ToolType, type_name="Square")
+    for x in range (10):
+        Tool.objects.create(tool_type=tool)
+    tool = get_object_or_404(ToolType, type_name="Tape Measure")
+    for x in range (15):
+        Tool.objects.create(tool_type=tool)
+    tool = get_object_or_404(ToolType, type_name="Wire Cutters")
+    for x in range (20):
+        Tool.objects.create(tool_type=tool)
     return redirect('index')

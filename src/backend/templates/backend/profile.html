@@ -58,6 +58,7 @@
                 <th scope="col">Reservation Date</th>
                 <th scope="col">Checkout Date</th>
                 <th scope="col">Due Date</th>
+                <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
@@ -67,6 +68,7 @@
                 <td>{{ order.reservation_date }}</td>
                 <td>{{ order.checkout_date }}</td>
                 <td>{{ order.due_date }}</td>
+                <td><a class="btn btn-primary">View Order</a> </td>
               </tr>
               {% endfor %}
             </tbody>
