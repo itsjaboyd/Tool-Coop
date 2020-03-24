@@ -97,7 +97,7 @@ class OrderItem(models.Model):
         for x in range(self.quantity):
             tool_item = Tool.objects.filter(tool_type = self.tool, is_available=False)[0]
             tool_item.is_reserved = False
-            
+
 
 
 class Order(models.Model):
