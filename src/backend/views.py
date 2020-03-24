@@ -29,6 +29,18 @@ class ToolDetailView(DetailView):
     model = ToolType
     template_name = "backend/product-page.html"
 
+class AdminOrdersView(View):
+    def get(self, *args, **kwargs):
+        try:
+            order = Order.objects.filter( is_checked_out=False, is_reserved=True)
+            context=  {
+                'object_list': order
+            }
+            return render(self.request, "backend/orders.html", context)
+        except ObjectDoesNotExist:
+            messages.info(self.request, "You do not have an active order")
+            return redirect("/")
+
 class OrderSummaryView(DetailView):
     def get(self, *args, **kwargs):
         try:
@@ -40,6 +52,30 @@ class OrderSummaryView(DetailView):
         except ObjectDoesNotExist:
             messages.info(self.request, "You do not have an active order")
             return redirect("/")
+
+class AdminOrderSummaryView(DetailView):
+    def get(self, *args, **kwargs):
+        try:
+            order = Order.objects.get(pk=kwargs['id'])
+            context=  {
+                'object': order,
+            }
+            return render(self.request, "backend/admin-order-summary.html", context)
+        except ObjectDoesNotExist:
+            messages.info(self.request, "You do not have an active order")
+            return redirect("/")
+
+class PreviousOrderSummaryView(DetailView):
+    def get(self, *args, **kwargs):
+        try:
+            order = Order.objects.get(user=self.request.user, pk=kwargs['id'])
+            context=  {
+                'object': order
+            }
+            return render(self.request, "backend/previous-order-summary.html", context)
+        except ObjectDoesNotExist:
+            messages.info(self.request, "Order Not Found")
+            return redirect("profile")
 
 class CheckoutView(View):
     def get(self, *args, **kwargs):
@@ -180,6 +216,53 @@ def remove_single_tool_from_cart(request, slug):
         messages.info(request, "You do not have an active order.")
         return redirect("product", slug=slug)
 
+def contact(request):
+    template = loader.get_template("backend/contact.html")
+    return HttpResponse(template.render({}, request))
+
+    form_class = ContactForm
+
+    if request.method == 'POST':
+        form = form_class(data=request.POST)
+
+        if form.is_valid():
+            contact_first_name = request.POST.get(
+                'contact_first_name'
+            , '')
+            contact_last_name = request.POST.get(
+                'contact_last_name'
+            , '')
+            contact_email = request.POST.get(
+                'contact_email'
+            , '')
+            form_content = request.POST.get('content', '')
+
+            # Email the profile with the
+            # contact information
+            template = get_template('Email_template.txt')
+            context = {
+                'contact_first_name': contact_first_name,
+				'contact_last_name': contact_last_name,
+                'contact_email': contact_email,
+                'form_content': form_content,
+            }
+            content = template.render(context)
+
+            email = EmailMessage(
+                "New contact form submission",
+                content,
+                "Your website" +'',
+                ['youremail@gmail.com'],
+                headers = {'Reply-To': contact_email }
+            )
+            email.send()
+            messages.info(request, "Your Message Was sent")
+            return redirect('contact')
+
+    return render(request, 'contact', {
+        'form': form_class,
+    })
+
 
 def add_tools(request):
     tool = get_object_or_404(ToolType, type_name="Axe")
@@ -244,50 +327,4 @@ def add_tools(request):
         Tool.objects.create(tool_type=tool)
     return redirect('index')
 	
-def contact(request):
-    template = loader.get_template("backend/contact.html")
-    return HttpResponse(template.render({}, request))
-
-    form_class = ContactForm
-
-    if request.method == 'POST':
-        form = form_class(data=request.POST)
-
-        if form.is_valid():
-            contact_first_name = request.POST.get(
-                'contact_first_name'
-            , '')
-            contact_last_name = request.POST.get(
-                'contact_last_name'
-            , '')
-            contact_email = request.POST.get(
-                'contact_email'
-            , '')
-            form_content = request.POST.get('content', '')
-
-            # Email the profile with the
-            # contact information
-            template = get_template('Email_template.txt')
-            context = {
-                'contact_first_name': contact_first_name,
-				'contact_last_name': contact_last_name,
-                'contact_email': contact_email,
-                'form_content': form_content,
-            }
-            content = template.render(context)
-
-            email = EmailMessage(
-                "New contact form submission",
-                content,
-                "Your website" +'',
-                ['youremail@gmail.com'],
-                headers = {'Reply-To': contact_email }
-            )
-            email.send()
-            messages.info(request, "Your Message Was sent")
-            return redirect('contact')
-
-    return render(request, 'contact', {
-        'form': form_class,
-    })
 

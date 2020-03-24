@@ -58,6 +58,7 @@ class ToolType(models.Model):
         return reverse("remove-single-tool-from-cart", kwargs={
             'slug': self.slug
         })
+    
     def get_available(self):
         return self.tool_set.all().filter(is_available=True)
 
@@ -127,3 +128,8 @@ class Order(models.Model):
     def checkin_order_item(self):
         for item in items.all():
             item.checkin_tool()
+
+    def get_absolute_url(self):
+        return reverse("previous-order-summary", kwargs={'id':self.id})
+    def get_admin_order_summary(self):
+        return reverse("admin-order-summary", kwargs={'id':self.id})

@@ -1,0 +1,33 @@
+{% extends "backend/base.html" %}
+{% block content %}
+<main class="mt-5 pt-4">
+    <div class="container">
+        <div class="table-responsive">
+            <h2> Order Summary</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tool</th>
+                    <th scope="col">Quantity in Cart</th>
+                    <th scope="col">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in object.items.all %}
+                    <tr>
+                        <th scope="row"><a href="{{ item.tool.get_absolute_url }}" class="btn btn-sm btn-primary" >View Tool</a></th>
+                        <td><a class='mx-1' href="{{ item.tool.get_absolute_url }}">{{ item.tool.type_name}}</a></td>
+                        <td class='mx-1'>{{ item.tool.description}}</td>
+                        <td>
+                            <span class="my-1"><bold>{{ item.quantity}}</bold></span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="{% url 'profile' %}" class="float-right btn btn-teal btn-rounded btn-md my-3">Back To Profile</a>
+        </div>
+    </div>
+</main>
+{% endblock content %}

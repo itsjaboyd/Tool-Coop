@@ -16,6 +16,9 @@ from .views import (InventoryView,
                     update_profile,
                     project,
 					contact,
+                    PreviousOrderSummaryView,
+                    AdminOrderSummaryView,
+                    AdminOrdersView
                     )
 
 
@@ -36,6 +39,9 @@ urlpatterns = [
     path('add-tools/', add_tools, name='add-tools'),
 	path('contact/', contact, name='contact'),
     path('project/', project, name='project'),
+    path('previous-order-summary/<id>', PreviousOrderSummaryView.as_view(), name='previous-order-summary'),
+    path('orders/', AdminOrdersView.as_view(), name='orders'),
+    path('admin-order-summary/<id>', AdminOrderSummaryView.as_view(), name='admin-order-summary')
 ]
 
 if settings.DEBUG:

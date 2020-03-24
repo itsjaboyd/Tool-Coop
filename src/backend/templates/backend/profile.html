@@ -2,12 +2,10 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-
 <main class="mt-5 pt-4">
   <div class="jumbotron">
     <h1 class="display-4">Welcome back, {{user.first_name }}!</h1>
     <hr class="my-4">
-    <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
     <a class="btn btn-primary btn-lg" href="#" role="button">View Products</a>
   </div>
     <div class="card mb-3" style="max-width: 540px;">
@@ -68,7 +66,7 @@
                 <td>{{ order.reservation_date }}</td>
                 <td>{{ order.checkout_date }}</td>
                 <td>{{ order.due_date }}</td>
-                <td><a class="btn btn-primary">View Order</a> </td>
+                <td><a class="btn btn-primary" href="{{ order.get_absolute_url }}">View Order</a> </td>
               </tr>
               {% endfor %}
             </tbody>
