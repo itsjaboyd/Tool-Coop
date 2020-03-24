@@ -284,6 +284,7 @@ def contact(request):
                 headers = {'Reply-To': contact_email }
             )
             email.send()
+            messages.info(request, "Your Message Was sent")
             return redirect('contact')
 
     return render(request, 'contact', {
