@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-   
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
     <!-- Bootstrap core CSS -->
@@ -46,23 +46,24 @@
     </style>
   </head>
   <body>
+    <a name="top" />
     <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
       <div class="container">
-  
+
         <!-- Brand -->
         <a class="navbar-brand waves-effect" href="#" target="_blank">
-          <strong class="blue-text">Toolshed</strong>
+            <img src="../../../media/ToolCoopLogo.png" width=65 />
         </a>
-  
+
         <!-- Collapse -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-  
+
         <!-- Links -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-  
+
           <!-- Left -->
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
@@ -76,8 +77,16 @@
             <li class="nav-item">
               <a class="nav-link waves-effect" href="{% url 'checkout' %}" >Checkout</a>
             </li>
+
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'inventory' %}" >View Inventory</a>
+            </li>
+			<li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'contact' %}" >Contact Us</a>
+            </li>
+
           </ul>
-  
+
           <!-- Right -->
           <ul class="navbar-nav nav-flex-icons">
             {% if user.is_authenticated%}
@@ -103,14 +112,14 @@
             </li>
             {% endif %}
           </ul>
-  
+
         </div>
-  
+
 
       </div>
     </nav>
     <!-- Navbar -->
-  
+
     <div class="container">
       <div class="mt-5 pt-4">
         {% if messages %}
@@ -129,6 +138,23 @@
       {% endblock %}
 
     </div>
+
+    <!--Begin Footer-->
+    <nav class="navbar navbar-expand-lg navbar-light white">
+      <div class="container">
+        <div class="navbar-collapse justify-content-center" id="navbarSupportedContent">
+            <!-- Brand -->
+            <a>© LIJJ 2020</a>
+            <a class="navbar-brand waves-effect px-5" href="#" target="_blank">
+                <img src="../../../media/ToolCoopLogo.png" width=65 />
+            </a>
+            <a href="#top">Back to top</a>
+        </div>
+      </div>
+    </nav>
+    <!--End Footer-->
+
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
    <!-- SCRIPTS -->

@@ -1,0 +1,101 @@
+{% extends "backend/base.html" %}
+{% block content %}
+<!--Main layout-->
+
+<style>
+    .head {
+        text-align: center;
+    }
+    .desc {
+        padding: 0px;
+        margin: 0px;
+    }
+    .prod {
+        margin-top: 20px;
+    }
+    hr {
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+    .jumbotron {
+        padding: 30px;
+    }
+    .img-use {
+        -webkit-box-shadow: 10px 10px 25px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 10px 10px 25px 0px rgba(0,0,0,0.75);
+        box-shadow: 10px 10px 25px 0px rgba(0,0,0,0.75);
+    }
+    b {
+        font-size: x-large;
+    }
+
+</style>
+
+<div class="container px-5">
+    <div class="jumbotron head">
+        <h4 class="display-4">Get Started Today!</h4>
+        <p class="lead desc">The tools you rent from the Tool Coop will be reliable and trustworthy.</p>
+        <p class="lead desc">Get started on that project today!</p>
+        <a class="btn btn-primary prod" href="{% url 'inventory' %}" >Products</a>
+    </div>
+    <div class="row">
+        <div class="col">
+            <img class="img-use" src="../../../media/project_page/ManUsingDrill.jpg" width=400 />
+        </div>
+        <div class="col">
+            <h3 class="display-4 text-muted">Albert using our hand drill.</h3>
+            <p class="lead">
+                Our drills are rented from the best rated companies that incorporate
+                <b>brushless motor</b> technology. These drills have a light built into
+                the base to light up your work area as well as the optional torque handle
+                for additional stability.
+            </p>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col">
+            <h3 class="display-4 text-muted">Karen using our circular saw.</h3>
+            <p class="lead">
+                Karen is demonstrating how to properly cut some wood in half.
+                Each time our saws are turned in, we sharpen or replace the saw
+                blade to ensure that our customers achieve a perfect cut <b>
+                every time.</b>
+            </p>
+        </div>
+        <div class="col">
+            <img class="img-use float-right" src="../../../media/project_page/WomanUsingSaw.jpg" width=400 />
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col">
+            <img class="img-use" src="../../../media/project_page/ManUsingCrowbar.jpg" width=400 />
+        </div>
+        <div class="col">
+            <h3 class="display-4 text-muted">Jerry using our crowbar.</h3>
+            <p class="lead">
+                We have a <b>versatile selection</b> of tools for the task at hand. One
+                tool that demonstrates this is our crowbar. Jerry is demonstrating
+                the usefulness of our crowbar by breaking and entering.
+                The crowbars we rent out have a longer length for added leverage.
+            </p>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col">
+            <h3 class="display-4 text-muted">Anne using our shovel.</h3>
+            <p class="lead">
+                Anne was so impressed by the quality of her shovel that she dug a 10 foot hole!
+                Just like the circular saw, we keep our shovel heads sharp and like new.
+                We care for the tools so <b>you don't have to!</b>
+            </p>
+        </div>
+        <div class="col">
+            <img class="img-use float-right" src="../../../media/project_page/WomanUsingShovel.jpg" width=400 />
+        </div>
+    </div>
+</div>
+<!--Main layout-->
+{% endblock content %}
