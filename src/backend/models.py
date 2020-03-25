@@ -78,27 +78,6 @@ class OrderItem(models.Model):
     is_checked_out = models.BooleanField(default=False)
     def __str__(self):
         return f'{self.tool.type_name} - {self.quantity}'
-    
-    def reserve_tool(self):
-        self.is_reserved = True
-        for x in range(self.quantity):
-            tool_item = Tool.objects.filter(tool_type = self.tool, is_available=True)[0]
-            tool_item.is_reserved = True
-
-    def checkout_tool(self):
-        self.is_reserved = True
-        self.is_checked_out = True
-        for x in range(self.quantity):
-            tool_item = Tool.objects.filter(tool_type = self.tool, is_available=True)[0]
-            tool_item.is_reserved = True
-    
-    def checkin_tool(self):
-        self.is_reserved = False
-        for x in range(self.quantity):
-            tool_item = Tool.objects.filter(tool_type = self.tool, is_available=False)[0]
-            tool_item.is_reserved = False
-
-
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -133,3 +112,4 @@ class Order(models.Model):
         return reverse("previous-order-summary", kwargs={'id':self.id})
     def get_admin_order_summary(self):
         return reverse("admin-order-summary", kwargs={'id':self.id})
+    

@@ -10,6 +10,7 @@ from django.core.mail import EmailMessage
 from django.template.loader import get_template
 from .forms import CheckoutForm,UserRegisterForm, UserUpdateForm, ProfileUpdateForm, ContactForm
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
 
 # Create your views here.
 def index(request):
@@ -64,6 +65,28 @@ class AdminOrderSummaryView(DetailView):
         except ObjectDoesNotExist:
             messages.info(self.request, "You do not have an active order")
             return redirect("/")
+    def post(self, *args, **kwargs):
+        form = CheckoutForm(self.request.POST or None)
+        if form.is_valid():
+            print('form is valid')
+            print(str(form['start_date'].value))
+            order = Order.objects.get(user=self.request.user, is_reserved=False, is_checked_out=False)
+            if order.reservation_date == null:
+                order.reservation_date = datetime.today()
+            order.checkout_date = datetime.today()
+            order.due_date = form.cleaned_data['end_date']
+            order.is_reserved = True
+            for item in order.items.all():
+                item.is_reserved = True
+                item.is_checked_out = True
+                for x in range(item.quanity):
+                    tool_item = Tool.objects.filter(tool_type = item.tool, is_available=True)[0]
+                    tool_item.is_reserved = True
+                    tool_item.is_checked_out=True
+            order.save()
+            messages.info(self.request, "Checkout Completed!")
+            return redirect('index')
+
 
 class PreviousOrderSummaryView(DetailView):
     def get(self, *args, **kwargs):
@@ -98,6 +121,13 @@ class CheckoutView(View):
             order.reservation_date = form.cleaned_data['start_date']
             order.due_date = form.cleaned_data['end_date']
             order.is_reserved = True
+            for item in order.items.all():
+                item.is_reserved = True
+                item.is_checked_out = False
+                for x in range(item.quantity):
+                    tool_item = Tool.objects.filter(tool_type = item.tool, is_available=True)[0]
+                    tool_item.is_reserved = True
+                    tool_item.is_checked_out=False
             order.save()
             messages.info(self.request, "Reservation Sent!")
             return redirect('index')
@@ -215,6 +245,7 @@ def remove_single_tool_from_cart(request, slug):
     else:
         messages.info(request, "You do not have an active order.")
         return redirect("product", slug=slug)
+
 
 def contact(request):
     template = loader.get_template("backend/contact.html")
