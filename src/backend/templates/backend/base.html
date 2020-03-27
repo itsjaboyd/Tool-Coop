@@ -68,9 +68,9 @@
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
               <a class="nav-link waves-effect" href="{% url 'index' %}">Toolshed
-                <span class="sr-only">(current)</span>
               </a>
             </li>
+            {% if user.is_authenticated%}
             <li class="nav-item">
               <a class="nav-link waves-effect" href="{% url 'inventory' %}" > View Products</a>
             </li>
@@ -78,6 +78,7 @@
               <a class="nav-link waves-effect" href="{% url 'orders' %}" >View Orders</a>
             </li>
             <li class="nav-item">
+              {% endif %}
               <a class="nav-link waves-effect" href="{% url 'project' %}" >View Projects</a>
             </li>
 			      <li class="nav-item">
@@ -164,6 +165,11 @@
   <script type="text/javascript" src="{% static 'backend/js/bootstrap.min.js' %}"></script>
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="{% static 'backend/js/mdb.min.js' %}"></script>
+  <script>
+      $('.carousel').carousel({
+          interval: 2000
+          })
+  </script>
   <!-- Initializations -->
   </body>
 </html>
