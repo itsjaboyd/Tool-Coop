@@ -36,15 +36,19 @@ We also don't need to specify who made the branch in the branch name because git
 
 1. [Django backend framework](https://docs.djangoproject.com/en/3.0/)
 2. [Reactjs frontend framework](https://reactjs.org/docs/getting-started.html)
-3. [AWS for web page hosting](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-django.html)
+4. [Heroku Hosting](https://devcenter.heroku.com/categories/working-with-django)
 
 (Click on the links to visit their corresponding websites)
+
+After considering Amazon Beanstalk, it became apparant that it might not be the best method of deployment for our applicaiton.
+We are currently considering Heroku, another platform dedicating to hosting apps in many languages, including python and specifically Django.
+
 
 This is a simple web application so use any text editor you want.\
 This project will be written in Python and JavaScript, along with some HTML and CSS.\
 We can use Reactjs to embed the majority of the HTML in the js files.\
 For CSS we can make a custom style sheet, or we can do custom css embedded in our js files with React.\
-We could also use a CSS framework such as [_Bootstrap_](https://react-bootstrap.github.io/getting-started/introduction)
+We will also use a CSS framework called [_Bootstrap_](https://react-bootstrap.github.io/getting-started/introduction).
 
 ## Build Instructions
 
@@ -53,9 +57,29 @@ To run the webpage on a local server navigate to src/ and run:
 
 ```$ python manage.py runserver```
 
+There are some dependencies associated with the application that may need downloaded.\
+See the "Dependencies/Libraries" section in this readme file.
+
 Once the local server is up and running, open up a browser and pull up your localhost on port 8000:
 
 ```http://localhost:8000/```
+
+This will take you straight to the homepage of our application, where you can then navigate across the site using the navigation.
+
+
+## Dependencies/Libraries
+To speed up and aid the development process, our application uses several useful libraries.\
+These python libraries include:
+
+* [Django](https://www.djangoproject.com/)
+* [django-cripsy-forms](https://github.com/django-crispy-forms/django-crispy-forms)
+* [django-localflavor](https://github.com/django/django-localflavor)
+* [django-phonenumber-field](https://github.com/stefanfoulis/django-phonenumber-field)
+* [image](https://pypi.org/project/image/)
+* [phonenumbers](https://pypi.org/project/phonenumbers/)
+* [Pillow](https://pypi.org/project/Pillow/)
+ 
+All of these packages can be downloaded using python's package manager, _pip_.
 
 ## Unit Testing Instructions
 
@@ -66,7 +90,7 @@ Unit testing instructions will appear here once we are far enough into the proje
 System testing instructions will appear here once we are far enough into the project.
 
 ## Other Notes
-**Phase 2**:\
+**Phase 2**:
 
 * High fidelity prototype files are located in the src/template folder, which includes a home, inventory, and tool checkout page.
 * Low fidelity wireframe is found in the docs/diagrams folder.
@@ -74,9 +98,22 @@ System testing instructions will appear here once we are far enough into the pro
     - [Scrum board](https://docs.google.com/spreadsheets/d/115-6lCkCsZA2XjLZDjx7ftg_P1KPQyFkSXc2TrXL4D8/edit?usp=sharing)
 
 
+**Phase 3**:
 
-##Ian's TODO
+* The documents required for this milestone's deliverables are loacted in /docs/Phase 3 Documents.
+	- This includes all sprint planning documents, standup reports, and updated documents such as the project plan and requirements.
+* Screenshots that include our current issues page and scrum board are in teh docs/phase3screenshots folder.
+    - [Scrum board](https://docs.google.com/spreadsheets/d/115-6lCkCsZA2XjLZDjx7ftg_P1KPQyFkSXc2TrXL4D8/edit?usp=sharing)
+
+
+## Ian's TODO
 set up virtual environment for the django project to make running on beanstock easier
 or manage requirements.txt manually
 
 set up tool stack so that everything is ready for development to actuallys start
+
+
+
+
+
+
