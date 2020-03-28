@@ -12,6 +12,7 @@ from .forms import CheckoutForm,UserRegisterForm, UserUpdateForm, ProfileUpdateF
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.contrib.auth.models import User
+
 # Create your views here.
 def index(request):
     template = loader.get_template("backend/index.html")
@@ -105,6 +106,9 @@ class CheckoutView(View):
     def get(self, *args, **kwargs):
         order = Order.objects.get(user=self.request.user, is_reserved=False, is_checked_out=False)
         profile = Profile.objects.get(user=self.request.user)
+        if(profile.city == ''):
+            messages.info(self.request, f'You must update your profile information before you can checkout.')
+            return redirect('edit-profile')
         o_form = CheckoutForm()
         context= {
             'o_form': o_form,
@@ -130,6 +134,8 @@ class CheckoutView(View):
                     tool_item = Tool.objects.filter(tool_type = item.tool, is_available=True)[0]
                     tool_item.is_reserved = True
                     tool_item.is_checked_out=False
+                    tool_item.save()
+                item.save()
             order.save()
             messages.info(self.request, "Reservation Sent!")
             return redirect('index')
