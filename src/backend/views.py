@@ -11,7 +11,7 @@ from django.template.loader import get_template
 from .forms import CheckoutForm,UserRegisterForm, UserUpdateForm, ProfileUpdateForm, ContactForm
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
-
+from django.contrib.auth.models import User
 # Create your views here.
 def index(request):
     template = loader.get_template("backend/index.html")
@@ -300,67 +300,35 @@ def contact(request):
     })
 
 
-def add_tools(request):
-    tool = get_object_or_404(ToolType, type_name="Axe")
-    for x in range (3):
-        Tool.objects.create(tool_type=tool)
-    tool = get_object_or_404(ToolType, type_name="Chisel")
-    for x in range (7):
-        Tool.objects.create(tool_type=tool)
-    tool = get_object_or_404(ToolType, type_name="Drill")
-    for x in range (5):
-        Tool.objects.create(tool_type=tool)
-    tool = get_object_or_404(ToolType, type_name="Crowbar")
-    for x in range (10):
-        Tool.objects.create(tool_type=tool)
-    tool = get_object_or_404(ToolType, type_name="Circular Saw")
-    for x in range (3):
-        Tool.objects.create(tool_type=tool)
-    tool = get_object_or_404(ToolType, type_name="Hammer")
-    for x in range (10):
-        Tool.objects.create(tool_type=tool)
-    tool = get_object_or_404(ToolType, type_name="File")
-    for x in range (20):
-        Tool.objects.create(tool_type=tool)
-    tool = get_object_or_404(ToolType, type_name="Hand Saw")
-    for x in range (15):
-        Tool.objects.create(tool_type=tool)
-    tool = get_object_or_404(ToolType, type_name="Hex Keys")
-    for x in range (10):
-        Tool.objects.create(tool_type=tool)
-    tool = get_object_or_404(ToolType, type_name="Jigsaw")
-    for x in range (5):
-        Tool.objects.create(tool_type=tool)
-    tool = get_object_or_404(ToolType, type_name="Level")
-    for x in range (20):
-        Tool.objects.create(tool_type=tool)
-    tool = get_object_or_404(ToolType, type_name="Mallet")
-    for x in range (10):
-        Tool.objects.create(tool_type=tool)
-    tool = get_object_or_404(ToolType, type_name="Pliers")
-    for x in range (20):
-        Tool.objects.create(tool_type=tool)
-    tool = get_object_or_404(ToolType, type_name="Rotary Tool")
-    for x in range (5):
-        Tool.objects.create(tool_type=tool)
-    tool = get_object_or_404(ToolType, type_name="Screwdriver")
-    for x in range (50):
-        Tool.objects.create(tool_type=tool)
-    tool = get_object_or_404(ToolType, type_name="Sledgehammer")
-    for x in range (5):
-        Tool.objects.create(tool_type=tool)
-    tool = get_object_or_404(ToolType, type_name="Soldering Iron")
-    for x in range (8):
-        Tool.objects.create(tool_type=tool)
-    tool = get_object_or_404(ToolType, type_name="Square")
-    for x in range (10):
-        Tool.objects.create(tool_type=tool)
-    tool = get_object_or_404(ToolType, type_name="Tape Measure")
-    for x in range (15):
-        Tool.objects.create(tool_type=tool)
-    tool = get_object_or_404(ToolType, type_name="Wire Cutters")
-    for x in range (20):
-        Tool.objects.create(tool_type=tool)
+def setup(request):
+    User.objects.create_superuser(username='admin', password='123', email='')
+    add_tool_helper("Axe", 'axe', 3)
+    add_tool_helper("Chisel", 'chisel', 4)
+    add_tool_helper("Circular Saw", 'circular-saw', 1)
+    add_tool_helper("Crowbar", 'crowbar', 5)
+    add_tool_helper("Drill", 'drill', 2)
+    add_tool_helper("File", 'file', 5)
+    add_tool_helper("Hammer", 'hammer', 5)
+    add_tool_helper("Hand Saw", 'hand-saw', 1)
+    add_tool_helper("Hex Keys", 'hex-keys', 4)
+    add_tool_helper("Jigsaw", 'jigsaw', 1)
+    add_tool_helper("Level", 'level', 5)
+    add_tool_helper("Mallet", 'mallet', 2)
+    add_tool_helper("Pliers", 'pliers', 5)
+    add_tool_helper("Rotary Tool", 'rotary-tool', 1)
+    add_tool_helper("Screwdriver", 'screwdriver', 5)
+    add_tool_helper("Sledgehammer", 'sledgehammer', 3)
+    add_tool_helper("Soldering Iron", 'soldering-iron', 1)
+    add_tool_helper("Square", 'square', 2)
+    add_tool_helper("Tape Measure", 'tape-measure', 5)
+    add_tool_helper("Wire Cutters", 'wire-cutters', 3)
     return redirect('index')
 	
 
+def add_tool_helper(tool_name, tool_slug, quantity):
+    f= open("..\\tools\\"+ tool_slug+".txt","r")
+    description =f.read()
+    ToolType.objects.create(type_name=tool_name, description=description, slug='axe', image='tool_pics/'+tool_slug+'.jpg')
+    tool = get_object_or_404(ToolType, type_name=tool_name)
+    for x in range (quantity):
+        Tool.objects.create(tool_type=tool)

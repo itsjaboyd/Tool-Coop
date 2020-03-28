@@ -131,11 +131,3 @@ class ToolOrderTests(TestCase):
         print(response)
         print("Checkout Passed!")
 
-    # def test_order_model():
-    #     pass
-    
-    # def test_order_item_model():
-    #     pass
-
-    # def test_order_model():
-    #     pass
