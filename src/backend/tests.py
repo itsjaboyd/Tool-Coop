@@ -1,9 +1,12 @@
 from django.test import TestCase
 from django.test import Client
 from django.contrib.auth.models import User
-from .models import Order, OrderItem, ToolType,Tool
+from .models import Order, OrderItem, ToolType,Tool,Profile
+from .forms import CheckoutForm
 from django.test.utils import setup_test_environment
 from django.urls import reverse
+from datetime import datetime
+from datetime import timedelta
 # Create your tests here.
 class ToolOrderTests(TestCase):
     def setUp(self):
@@ -85,14 +88,46 @@ class ToolOrderTests(TestCase):
         
         print("Tool Add To Cart Test Passed!")
 
-    
+    def test_add_to_cart(self):
+        print("Begin Tool Add To Cart Test")
+        tool = ToolType.objects.get(slug='axe')
+        print("Testing return URl: ")
+        response = self.client.get(tool.get_add_to_cart_url())
+        self.assertEqual(response.url, "/order-summary/")
+        print("Testing order created: ")
+        self.assertEqual( Order.objects.filter(user=self.user, is_reserved=False).exists(), True)
+        order = Order.objects.get(user=self.user, is_reserved=False)
+        print("Testing order item created: ")
+        self.assertEqual( order.items.filter(tool_id=tool.id).exists(), True)
+        print("Testing order item quanitity updated: ")
+        order_item= order.items.get(tool_id=tool.id)
+        print("Testing additional tool added to cart: ")
+        self.client.get(tool.get_add_to_cart_url())
+        order_item= order.items.get(tool_id=tool.id)
+        self.assertEqual(order_item.quantity, 2)
+        
+        print("Tool Add To Cart Test Passed!")
+
+    def test_check_out(self):
+        print("Begin Checkout Test")
+        tool = ToolType.objects.get(slug='axe')
+        self.client.get(tool.get_add_to_cart_url())
+        response = self.client.get(reverse('checkout'))
+        response_order = response.context['order']
+        self.assertEqual(len(response_order.items.all()), 1)
+
+        profile = Profile.objects.get(user=self.user)
+        
+        
 
 
-    # def test_order_model():
-    #     pass
-    
-    # def test_order_item_model():
-    #     pass
+        context = {
+            'start_date': datetime.now().date() + timedelta(days=1),
+            'end_date':  datetime.now().date() + timedelta(days=4)  
+        }
+        response = self.client.post('/checkout/',context)
+        order=Order.objects.get(id=response_order.id)
+        print(order.due_date)
+        print(response)
+        print("Checkout Passed!")
 
-    # def test_order_model():
-    #     pass
