@@ -86,6 +86,7 @@ class AdminOrderSummaryView(DetailView):
             order.save()
             messages.info(self.request, "Checkout Completed!")
             return redirect('index')
+        
 
 
 class PreviousOrderSummaryView(DetailView):
@@ -118,7 +119,8 @@ class CheckoutView(View):
             print('form is valid')
             print(str(form['start_date'].value))
             order = Order.objects.get(user=self.request.user, is_reserved=False, is_checked_out=False)
-            order.reservation_date = form.cleaned_data['start_date']
+            order.reservation_date = datetime.now()
+            order.checkout_date = form.cleaned_data['start_date']
             order.due_date = form.cleaned_data['end_date']
             order.is_reserved = True
             for item in order.items.all():
@@ -131,6 +133,9 @@ class CheckoutView(View):
             order.save()
             messages.info(self.request, "Reservation Sent!")
             return redirect('index')
+        else:
+            messages.info(self.request, "Error: Checkout could not be completed!")
+            return redirect('checkout')
 
 
 def register(request):

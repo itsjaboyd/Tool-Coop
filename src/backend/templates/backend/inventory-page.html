@@ -15,7 +15,7 @@
           {% for item in object_list %}
           <!--Grid column-->
           <div class="col-lg-3 col-md-6 mb-4">
-
+            <a href="{{ item.get_absolute_url }}">
             <!--Card-->
             <div class="card">
               <a href="{{ item.get_absolute_url }}">
@@ -23,7 +23,7 @@
                 <div class="view overlay">
                   <img src="{{ item.image.url }}" class="card-img-top"
                     alt="">
-                  <a>
+                  <a href="{{ item.get_absolute_url }}">
                     <div class="mask rgba-white-slight"></div>
                   </a>
                 </div>
@@ -41,8 +41,9 @@
                   <p class="text-muted">{{item.get_available | length}} Available</p>
                 </div>
                 <!--Card content{{ item.tool_set.all | length }}-->
-              </a>
+              
             </div>
+            </a>
             <!--Card-->
             
           </div>
