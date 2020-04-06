@@ -70,7 +70,7 @@
               <a class="nav-link waves-effect" href="{% url 'index' %}">Toolshed
               </a>
             </li>
-            {% if user.is_authenticated%}
+            {% if user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link waves-effect" href="{% url 'inventory' %}" > View Products</a>
             </li>
@@ -89,6 +89,12 @@
 
           <!-- Right -->
           <ul class="navbar-nav nav-flex-icons">
+			{% if user.is_superuser %}
+			<li class="nav-item">
+              <a class="nav-link waves-effect" href="../admin/">Administrative View</a>
+            </li>
+			{% endif %}
+			
             {% if user.is_authenticated%}
             <li class="nav-item">
               <a class="nav-link waves-effect" href="{% url 'profile' %}">View Profile</a>
@@ -118,6 +124,7 @@
       </div>
     </nav>
     <!-- Navbar -->
+	<br><br><br><br>
 
     <div class="container">
       <div class="mt-5 pt-4">
