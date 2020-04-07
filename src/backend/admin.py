@@ -7,3 +7,5 @@ admin.site.register(Tool)
 admin.site.register(OrderItem)
 admin.site.register(Order)
 admin.site.register(Profile)
+
+admin.site.index_title = "Tool Shed Management"

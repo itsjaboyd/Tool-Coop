@@ -1,0 +1,40 @@
+{% extends "admin/base.html" %}
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+{% block extrastyle %}
+     <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'backend/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="{% static 'backend/css/mdb.min.css' %}" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="{% static 'backend/css/style.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block branding %}
+	<h1> Tool Shed Administration </h1>
+{% endblock %}
+
+
+{% block footer %}
+    <!--Begin Footer-->
+    <nav class="navbar navbar-expand-lg navbar-light white">
+      <div class="container">
+        <div class="navbar-collapse justify-content-center" id="navbarSupportedContent">
+            <!-- Brand -->
+            <a>© LIJJ 2020</a>
+            <a class="navbar-brand waves-effect px-5" href="#" target="_blank">
+                <img src="../../../media/ToolCoopLogo.png" width=65 />
+            </a>
+            <a href="#top">Back to top</a>
+            
+        </div>
+      </div>
+      <a class="test-right" href="{% url 'setup' %}">Setup</a>
+    </nav>
+    <!--End Footer-->
+{% endblock %}
