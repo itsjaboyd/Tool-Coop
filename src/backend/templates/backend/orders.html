@@ -3,34 +3,108 @@
 {% block content %}
 
 <main>
-    <div class="card">
-    <h5 class="card-header">Your Previous Reservations</h5>
-    <div class="card-body">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th>Customer</th>
-            <th scope="col">Reservation Date</th>
-            <th scope="col">Checkout Date</th>
-            <th scope="col">Due Date</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for order in object_list %}
-          <tr>
-            <th scope="row"></th>
-            <td> {{ order.user.username }}</td>
-            <td>{{ order.reservation_date }}</td>
-            <td>{{ order.checkout_date }}</td>
-            <td>{{ order.due_date }}</td>
-            <td><a class="btn btn-primary" href="{{ order.get_admin_order_summary }}">View Order</a> </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+  <div>
+    <div class="card my-5">
+      <h5 class="card-header">View Overdue Orders</h5>
+      <div class="card-body">
+        {% if checked_out_orders|length > 0 %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th>Customer</th>
+              <th scope="col">Date Reserved</th>
+              <th scope="col">Checkout Date</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in overdue_orders %}
+            <tr>
+              <th scope="row"></th>
+              <td> {{ order.user.username }}</td>
+              <td>{{ order.reservation_date }}</td>
+              <td>{{ order.checkout_date }}</td>
+              <td><a class="btn btn-primary" href="{{ order.get_admin_order_summary }}">View Order</a> </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <h1>No Overdue Orders</h1>
+        {% endif %}
+      </div>
     </div>
   </div>
+  <div class="card my-5">
+    <h5 class="card-header">View Reservations</h5>
+    <div class="card-body">
+      {% if reserved_orders|length > 0 %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th>Customer</th>
+              <th scope="col">Date Reserved</th>
+              <th scope="col">Checkout Date</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in reserved_orders %}
+            <tr>
+              <th scope="row"></th>
+              <td> {{ order.user.username }}</td>
+              <td>{{ order.reservation_date }}</td>
+              <td>{{ order.checkout_date }}</td>
+              <td><a class="btn btn-primary" href="{{ order.get_admin_order_summary }}">View Order</a> </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <h1>No Reserved Orders</h1>
+      {% endif %}
+    </div>
+  </div>
+    <div class="card my-5">
+      <h5 class="card-header">View Upcoming Due Dates</h5>
+      <div class="card-body">
+        {% if checked_out_orders|length > 0 %}
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th>Customer</th>
+                <th scope="col">Checkout Date</th>
+                <th scope="col">Due Date</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in checked_out_orders %}
+              <tr>
+                <th scope="row"></th>
+                <td> {{ order.user.username }}</td>
+                <td>{{ order.checkout_date }}</td>
+                <td>{{ order.due_date }}</td>
+                <td><a class="btn btn-primary" href="{{ order.get_admin_order_summary }}">View Order</a> </td>
+                <td>
+                  {% if order.is_checked_out %}
+                  <a class="btn btn-primary" href="{{ order.get_admin_checkin }}">Checkin</a>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <h1>No Checked Out</h1>
+        {% endif %}
+      </div>
+    </div>
+
+  
 </main>
 {% endblock content %}

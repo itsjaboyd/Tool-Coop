@@ -4,6 +4,7 @@ from django.shortcuts import reverse
 from django.utils.text import slugify
 from phonenumber_field.modelfields import PhoneNumberField
 from PIL import Image
+from datetime import datetime
 # Create your models here.
 
 # Create your models here.
@@ -68,7 +69,7 @@ class Tool(models.Model):
     is_available = models.BooleanField (default=True)
 
     def __str__(self):
-        return f'{self.tool_type.type_name}'
+        return f'{self.tool_type.type_name} - {self.is_available}'
 
 
 class OrderItem(models.Model):
@@ -112,4 +113,6 @@ class Order(models.Model):
         return reverse("previous-order-summary", kwargs={'id':self.id})
     def get_admin_order_summary(self):
         return reverse("admin-order-summary", kwargs={'id':self.id})
+    def get_admin_checkin(self):
+        return reverse("checkin",  kwargs={'id':self.id})
     

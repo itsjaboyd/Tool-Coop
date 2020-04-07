@@ -74,9 +74,11 @@
             <li class="nav-item">
               <a class="nav-link waves-effect" href="{% url 'inventory' %}" > View Products</a>
             </li>
+            {% if user.is_superuser %}
             <li class="nav-item">
               <a class="nav-link waves-effect" href="{% url 'orders' %}" >View Orders</a>
             </li>
+            {% endif %}
             <li class="nav-item">
               {% endif %}
               <a class="nav-link waves-effect" href="{% url 'project' %}" >View Projects</a>

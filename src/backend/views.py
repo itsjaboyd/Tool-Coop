@@ -8,10 +8,12 @@ from django.utils import timezone
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
-from .forms import CheckoutForm,UserRegisterForm, UserUpdateForm, ProfileUpdateForm, ContactForm
+from .forms import CheckoutForm,UserRegisterForm, UserUpdateForm, ProfileUpdateForm, ContactForm, ProfileSelectForm
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.db.models import Q
 
 # Create your views here.
 def index(request):
@@ -34,9 +36,13 @@ class ToolDetailView(DetailView):
 class AdminOrdersView(View):
     def get(self, *args, **kwargs):
         try:
-            order = Order.objects.filter( is_checked_out=False, is_reserved=True)
+            reserved_orders = Order.objects.filter(is_reserved=True, is_checked_out=False)
+            checked_out_orders = Order.objects.filter(is_reserved=True, is_checked_out=True)
+            overdue_orders = Order.objects.filter(due_date__lte=datetime.today() , is_checked_out=True)
             context=  {
-                'object_list': order
+                'reserved_orders': reserved_orders,
+                'checked_out_orders': checked_out_orders,
+                'overdue_orders': overdue_orders
             }
             return render(self.request, "backend/orders.html", context)
         except ObjectDoesNotExist:
@@ -47,20 +53,36 @@ class OrderSummaryView(DetailView):
     def get(self, *args, **kwargs):
         try:
             order = Order.objects.get(user=self.request.user, is_checked_out=False, is_reserved=False)
+            p_form= ProfileSelectForm()
             context=  {
-                'object': order
+                'object': order,
+                'p_form': p_form
             }
             return render(self.request, "backend/order-summary.html", context)
         except ObjectDoesNotExist:
             messages.info(self.request, "You do not have an active order")
             return redirect("/")
+    def post(self, *args, **kwargs):
+        form = ProfileSelectForm(self.request.POST or None)
+        if form.is_valid():
+            print('form is valid')
+            user_id = form.cleaned_data['customer_id']
+            print(user_id)
+            order = Order.objects.get(user=self.request.user, is_reserved=False, is_checked_out=False)
+            order.user = User.objects.get(id=user_id)
+            order.save()
+            return redirect("/admin-order-summary/" +str( order.id))
 
 class AdminOrderSummaryView(DetailView):
     def get(self, *args, **kwargs):
         try:
+            print(kwargs['id'])
             order = Order.objects.get(pk=kwargs['id'])
+            o_form = CheckoutForm()
+            p_form = ProfileUpdateForm()
             context=  {
                 'object': order,
+                'o_form': o_form
             }
             return render(self.request, "backend/admin-order-summary.html", context)
         except ObjectDoesNotExist:
@@ -70,20 +92,20 @@ class AdminOrderSummaryView(DetailView):
         form = CheckoutForm(self.request.POST or None)
         if form.is_valid():
             print('form is valid')
-            print(str(form['start_date'].value))
-            order = Order.objects.get(user=self.request.user, is_reserved=False, is_checked_out=False)
-            if order.reservation_date == null:
-                order.reservation_date = datetime.today()
+            print(kwargs)
+            order = Order.objects.get(pk=kwargs['id'])
+            order.reservation_date = datetime.today()
             order.checkout_date = datetime.today()
             order.due_date = form.cleaned_data['end_date']
             order.is_reserved = True
+            order.is_checked_out =True
             for item in order.items.all():
                 item.is_reserved = True
                 item.is_checked_out = True
-                for x in range(item.quanity):
+                for x in range(item.quantity):
                     tool_item = Tool.objects.filter(tool_type = item.tool, is_available=True)[0]
-                    tool_item.is_reserved = True
-                    tool_item.is_checked_out=True
+                    tool_item.is_available = False
+                    tool_item.save()
             order.save()
             messages.info(self.request, "Checkout Completed!")
             return redirect('index')
@@ -105,6 +127,8 @@ class PreviousOrderSummaryView(DetailView):
 class CheckoutView(View):
     def get(self, *args, **kwargs):
         order = Order.objects.get(user=self.request.user, is_reserved=False, is_checked_out=False)
+        if(self.request.user.is_superuser):
+            return redirect('admin-order-summary/'+ str(order.id))
         profile = Profile.objects.get(user=self.request.user)
         if(profile.city == ''):
             messages.info(self.request, f'You must update your profile information before you can checkout.')
@@ -132,8 +156,7 @@ class CheckoutView(View):
                 item.is_checked_out = False
                 for x in range(item.quantity):
                     tool_item = Tool.objects.filter(tool_type = item.tool, is_available=True)[0]
-                    tool_item.is_reserved = True
-                    tool_item.is_checked_out=False
+                    tool_item.is_available = False
                     tool_item.save()
                 item.save()
             order.save()
@@ -142,6 +165,8 @@ class CheckoutView(View):
         else:
             messages.info(self.request, "Error: Checkout could not be completed!")
             return redirect('checkout')
+
+
 
 
 def register(request):
@@ -184,6 +209,22 @@ def update_profile(request):
     }
     return render(request, 'backend/profile-edit.html',context)
 
+def checkin_tools(request, id):
+    order = Order.objects.get(pk=id)
+    order.checkin_date =  datetime.today()
+    for item in order.items.all():
+        for x in range(item.quantity):
+            tool_item = Tool.objects.filter(tool_type=item.tool, is_available=False).first()
+            tool_item.is_available = True
+            tool_item.save()
+        item.is_checked_out = False
+        item.is_reserved = False
+        item.save()
+        order.is_reserved = False
+        order.is_checked_out = False
+        order.save()
+    messages.info(request, "Order Checked In")
+    return redirect("orders")
 
 def add_to_cart(request, slug):
     tool_type= get_object_or_404(ToolType, slug=slug)
@@ -307,6 +348,7 @@ def contact(request):
 
 
 def setup(request):
+    User.objects.create_superuser(username='Joe', password='joespassword', email='')
     User.objects.create_superuser(username='admin', password='123', email='')
     add_tool_helper("Axe", 'axe', 3)
     add_tool_helper("Chisel", 'chisel', 4)

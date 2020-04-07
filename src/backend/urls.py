@@ -18,7 +18,8 @@ from .views import (InventoryView,
                     contact,
                     PreviousOrderSummaryView,
                     AdminOrderSummaryView,
-                    AdminOrdersView
+                    AdminOrdersView,
+                    checkin_tools
                     )
 
 
@@ -41,7 +42,8 @@ urlpatterns = [
     path('project/', project, name='project'),
     path('previous-order-summary/<id>', PreviousOrderSummaryView.as_view(), name='previous-order-summary'),
     path('orders/', AdminOrdersView.as_view(), name='orders'),
-    path('admin-order-summary/<id>', AdminOrderSummaryView.as_view(), name='admin-order-summary')
+    path('admin-order-summary/<id>', AdminOrderSummaryView.as_view(), name='admin-order-summary'),
+    path('check-in-tools/<id>', checkin_tools, name='checkin')
 ]
 
 if settings.DEBUG:

@@ -4,7 +4,11 @@ from django.contrib.auth.forms import UserCreationForm
 from localflavor.us.forms import USStateSelect
 from .models import Order, Profile
 
+
+USER_CHOICES= [tuple([user.id,user.username]) for user in User.objects.filter(is_superuser=False)]
+
 class CheckoutForm(forms.Form):
+    print(USER_CHOICES)
     start_date = forms.DateField(
         widget=forms.TextInput(     
             attrs={'type': 'date'} 
@@ -15,6 +19,15 @@ class CheckoutForm(forms.Form):
             attrs={'type': 'date'} 
         )
     )  
+    
+
+class ProfileSelectForm(forms.Form):
+    print(USER_CHOICES)
+    customer_id = forms.IntegerField(
+        widget=forms.Select(choices=USER_CHOICES)
+    ) 
+
+     
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()

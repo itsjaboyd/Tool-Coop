@@ -1,27 +1,8 @@
 {% extends "backend/base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
 <main class="mt-5 pt-4">
     <div class="container">
-        <div class="row">
-            <div class="col-md-6 col-sm-12"> 
-                <h5 class="font-weight-bold"><u>Customer Information</u></h5>
-                <!--Grid row-->
-                <span class="font-weight-bold"> Address:</span>
-                <div class="text-left ml-3">
-                    <p>{{ object.user.first_name }} {{ object.user.last_name}}
-                        <br>
-                        {{ object.user.profile.address1 }}, {{ object.user.profile.address2 }}
-                        <br>
-                        {{ object.user.profile.city }}, {{ object.user.profile.state }}
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-6 col-sm-12"> 
-                <h5 class="font-weight-bold"><u>Order Information</u></h5>
-                <!--Grid row-->
-                <span class="font-weight-bold"> Due Date: {{ object.due_date }}</span>
-            </div>
-        </div>
         <div class="table-responsive">
             <h2> Order Summary</h2>
             <table class="table">
@@ -44,8 +25,37 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <a href="{% url 'checkout' %}" class="float-right btn btn-teal btn-rounded btn-md my-3">Finish Checkout</a>
         </div>
+        <form class="card-body" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6 col-sm-12"> 
+                    <h5 class="font-weight-bold"><u>Customer Information</u></h5>
+                    <!--Grid row-->
+                    <span class="font-weight-bold"> Address:</span>
+                    <div class="text-left ml-3">
+                        <p>{{ object.user.first_name }} {{ object.user.last_name}}
+                            <br>
+                            {{ object.user.profile.address1 }}, {{ object.user.profile.address2 }}
+                            <br>
+                            {{ object.user.profile.city }}, {{ object.user.profile.state }}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12"> 
+                    <h5 class="font-weight-bold"><u>Order Information</u></h5>
+                    <!--Grid row-->
+             
+                    
+                    {{ o_form|crispy }}
+                    <div class="float-right">
+                        <button class="btn btn-primary btn-md " type="submit">Checkout</button>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </form>
     </div>
 </main>
 {% endblock content %}
