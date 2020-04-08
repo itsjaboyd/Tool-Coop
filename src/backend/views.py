@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect,reverse
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import loader
@@ -8,7 +8,7 @@ from django.utils import timezone
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
-from .forms import CheckoutForm,UserRegisterForm, UserUpdateForm, ProfileUpdateForm, ContactForm, ProfileSelectForm
+from .forms import CheckoutForm,UserRegisterForm, UserUpdateForm, ProfileUpdateForm, ContactForm, ProfileSelectForm,ToolTypeForm
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.contrib.auth.models import User
@@ -25,9 +25,38 @@ def project(request):
     return HttpResponse(template.render({}, request))
 
 
-class InventoryView(ListView):
-    model = ToolType
-    template_name = "backend/inventory-page.html"
+def view_inventory(request):
+    if request.method == 'POST':
+        t_form = ToolTypeForm(request.POST or None, request.FILES)
+        if t_form.is_valid():
+            print("form is valid")
+            tool_name = t_form.cleaned_data['type_name']
+            quantity = t_form.cleaned_data['quantity']
+            tool_slug = '-'.join(tool_name.lower().split(" "))
+            print(tool_slug)
+            t_form.save()
+            tool = ToolType.objects.get(slug=tool_slug)
+            for x in range(quantity):
+                Tool.objects.create(tool_type=tool,is_available=True)
+            return redirect(request,"product", kwargs={'slug':tool_slug})
+        else:
+            print(form.errors.values)
+            tools = ToolType.objects.all()
+            context ={
+                'tools':tools,
+                't_form':t_form
+            }
+            messages.info(request, "Error:" + form.errors.values)
+            return render(request, "backend/inventory-page.html", context)
+    else:
+        tools = ToolType.objects.all()
+        t_form= ToolTypeForm()
+        context ={
+            'tools':tools,
+            't_form':t_form
+        }
+        return render(request, "backend/inventory-page.html", context)
+
 
 class ToolDetailView(DetailView):
     model = ToolType
@@ -71,7 +100,7 @@ class OrderSummaryView(DetailView):
             order = Order.objects.get(user=self.request.user, is_reserved=False, is_checked_out=False)
             order.user = User.objects.get(id=user_id)
             order.save()
-            return redirect("/admin-order-summary/" +str( order.id))
+            return redirect("/admin-order-summary/" + str( order.id))
 
 class AdminOrderSummaryView(DetailView):
     def get(self, *args, **kwargs):
@@ -80,6 +109,7 @@ class AdminOrderSummaryView(DetailView):
             order = Order.objects.get(pk=kwargs['id'])
             o_form = CheckoutForm()
             p_form = ProfileUpdateForm()
+            o_form.instance.start_date = datetime.today
             context=  {
                 'object': order,
                 'o_form': o_form
@@ -234,8 +264,12 @@ def add_to_cart(request, slug):
             order = order_qs[0]
             if order.items.filter(tool_id=tool_type.id).exists():
                 order_item = order.items.get(tool_id=tool_type.id)
-                order_item.quantity += 1
-                order_item.save()
+                if order_item.quantity == tool_type.get_available():
+                    messages.info(request, "You cannot add more of this tool.")
+                    return redirect("order-summary")
+                else:
+                    order_item.quantity += 1
+                    order_item.save()
                 messages.info(request, "This item quanity updated.")
                 return redirect("order-summary")
             else:
@@ -298,6 +332,13 @@ def remove_single_tool_from_cart(request, slug):
         messages.info(request, "You do not have an active order.")
         return redirect("product", slug=slug)
 
+def get_remove_tool_from_inventory(self):
+        return reverse()
+def get_remove_single_tool_from_inventory(self):
+    return reverse()
+def get_add_tool_from_inventory(self):
+    tool = Tool.objects.create(tool_type=self, is_available=True)
+    return reverse()
 
 def contact(request):
     template = loader.get_template("backend/contact.html")

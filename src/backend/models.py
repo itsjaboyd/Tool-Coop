@@ -35,15 +35,23 @@ class Profile(models.Model):
 class ToolType(models.Model):
     type_name = models.CharField(max_length=100)
     description = models.TextField()
-    image = models.ImageField(default='default.jpeg', upload_to='tool_pics')
+    image = models.ImageField(default='default.jpg', upload_to='tool_pics')
     slug = models.SlugField(unique=True)
     def __str__(self):
         return f'{self.type_name}'
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.type_name)
+        img = Image.open(self.image.path)
+
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.image.path)
+
         super(ToolType, self).save(*args, **kwargs)
-    
+
+        
     def get_absolute_url(self):
         return reverse("product", kwargs={'slug':self.slug})
 
@@ -59,7 +67,14 @@ class ToolType(models.Model):
         return reverse("remove-single-tool-from-cart", kwargs={
             'slug': self.slug
         })
-    
+    def get_remove_tool_from_inventory(self):
+        return reverse()
+    def get_remove_single_tool_from_inventory(self):
+        return reverse()
+    def get_add_tool_from_inventory(self):
+        tool = Tool.objects.create(tool_type=self, is_available=True)
+        return reverse()
+
     def get_available(self):
         return self.tool_set.all().filter(is_available=True)
 
@@ -70,7 +85,7 @@ class Tool(models.Model):
 
     def __str__(self):
         return f'{self.tool_type.type_name} - {self.is_available}'
-
+    
 
 class OrderItem(models.Model):
     tool = models.ForeignKey(ToolType,on_delete=models.CASCADE)

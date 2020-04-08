@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
-from .views import (InventoryView,
+from .views import (view_inventory,
                     index,
                     CheckoutView,
                     ToolDetailView,
@@ -30,7 +30,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='backend/logout.html'), name='logout'),
     path('profile/', profile, name='profile'),
     path('edit-profile/', update_profile, name='edit-profile'),
-    path('inventory/', InventoryView.as_view(), name='inventory'),
+    path('inventory/', view_inventory, name='inventory'),
     path('products/<slug>', ToolDetailView.as_view(), name='product'),
     path('order-summary/', OrderSummaryView.as_view(), name='order-summary'),
     path('checkout/', CheckoutView.as_view(), name='checkout'),
