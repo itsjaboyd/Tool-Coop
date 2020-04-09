@@ -41,15 +41,19 @@ class ToolType(models.Model):
         return f'{self.type_name}'
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.type_name)
+        self.slug = '-'.join(self.type_name.lower().split(" "))
+        super().save()
+        print('save')
+        print(self.image.path)
         img = Image.open(self.image.path)
+    
 
         if img.height > 300 or img.width > 300:
             output_size = (300, 300)
             img.thumbnail(output_size)
             img.save(self.image.path)
-
-        super(ToolType, self).save(*args, **kwargs)
+       
+        
 
         
     def get_absolute_url(self):
@@ -67,14 +71,6 @@ class ToolType(models.Model):
         return reverse("remove-single-tool-from-cart", kwargs={
             'slug': self.slug
         })
-    def get_remove_tool_from_inventory(self):
-        return reverse()
-    def get_remove_single_tool_from_inventory(self):
-        return reverse()
-    def get_add_tool_from_inventory(self):
-        tool = Tool.objects.create(tool_type=self, is_available=True)
-        return reverse()
-
     def get_available(self):
         return self.tool_set.all().filter(is_available=True)
 

@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 from .views import (view_inventory,
                     index,
                     CheckoutView,
-                    ToolDetailView,
+                    view_product,
                     add_to_cart,
                     remove_single_tool_from_cart,
                     remove_tool_from_cart,
@@ -31,7 +31,7 @@ urlpatterns = [
     path('profile/', profile, name='profile'),
     path('edit-profile/', update_profile, name='edit-profile'),
     path('inventory/', view_inventory, name='inventory'),
-    path('products/<slug>', ToolDetailView.as_view(), name='product'),
+    path('products/<slug>', view_product, name='product'),
     path('order-summary/', OrderSummaryView.as_view(), name='order-summary'),
     path('checkout/', CheckoutView.as_view(), name='checkout'),
     path('add-to-cart/<slug>', add_to_cart, name='add-to-cart'),
@@ -46,5 +46,3 @@ urlpatterns = [
     path('check-in-tools/<id>', checkin_tools, name='checkin')
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

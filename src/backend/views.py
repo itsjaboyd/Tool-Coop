@@ -14,6 +14,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.db.models import Q
+from django.conf import settings
 
 # Create your views here.
 def index(request):
@@ -30,15 +31,15 @@ def view_inventory(request):
         t_form = ToolTypeForm(request.POST or None, request.FILES)
         if t_form.is_valid():
             print("form is valid")
+            print(settings.MEDIA_ROOT)
+            print(t_form.cleaned_data['image'])
             tool_name = t_form.cleaned_data['type_name']
             quantity = t_form.cleaned_data['quantity']
-            tool_slug = '-'.join(tool_name.lower().split(" "))
-            print(tool_slug)
             t_form.save()
-            tool = ToolType.objects.get(slug=tool_slug)
+            tool = ToolType.objects.get(type_name=tool_name)
             for x in range(quantity):
                 Tool.objects.create(tool_type=tool,is_available=True)
-            return redirect(request,"product", kwargs={'slug':tool_slug})
+            return redirect(request,"product", kwargs={'slug':tool.slug})
         else:
             print(form.errors.values)
             tools = ToolType.objects.all()
@@ -58,9 +59,26 @@ def view_inventory(request):
         return render(request, "backend/inventory-page.html", context)
 
 
-class ToolDetailView(DetailView):
-    model = ToolType
-    template_name = "backend/product-page.html"
+def view_product(request, slug):
+    if request.method == 'POST':
+        tool = ToolType.objects.get(slug=slug)
+        t_form= ToolTypeForm(request.POST or None, request.FILES, instance=tool)
+        if t_form.is_valid():
+            t_form.save()
+        context={
+            'object': tool,
+            't_form': t_form
+        }
+        return render(request,"backend/product-page.html", context)
+    else:
+        tool = ToolType.objects.get(slug=slug)
+        t_form= ToolTypeForm(instance=tool,initial={ 'quantity': len(tool.tool_set.all()) })
+        context={
+            'object': tool,
+            't_form': t_form
+        }
+        return render(request,"backend/product-page.html", context)
+    
 
 class AdminOrdersView(View):
     def get(self, *args, **kwargs):
