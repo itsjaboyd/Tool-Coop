@@ -10,15 +10,34 @@
   </div>
     <div class="card mb-3">
         <div class="row no-gutters">
-          <div class="col-md-4">
+          <div class="col-md-5">
             <img src="{{ user.profile.image.url }}" class="card-img" alt="{{ user.profile.image.url }}">
+            <button type="button"class="btn btn-primary btn-block my-2" data-toggle="modal" data-target="#exampleModal">
+              Edit Profile
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="card">
+                  <form method="POST" enctype="multipart/form-data" class="card-body">
+                      {% csrf_token %}
+                      <fieldset class="form-group">
+                          <legend class="border-bottom mb-4"> Profile Info</legend>
+                          {{ u_form|crispy}}
+                          {{ p_form|crispy}}
+                      </fieldset>
+                      <div class ="form-group">
+                          <button class="btn btn-outline-info" type="submit"> Update Profile</button>
+                      </div>
+                  </form>
+              </div>
+              </div>
+            </div>
           </div>
-          <div class="col-md-8">
-            <div class="card-body">
-                <hr>
-                <h5>Your Information:</h5>
+          <div class="col-md-7">
+            <div class="card-body text-center py-3">
+                <h2><u>Your Information:</u></h2>
                 <br>
-                <h5 class="font-weight-bold"><u>Customer Information</u></h5>
                 <p>
                   <span class="font-weight-bold"> Username:</span> 
                   {{ user.username }} 
@@ -28,7 +47,7 @@
                     {{ user.email }} 
                 </p>
                   <span class="font-weight-bold"> Address:</span>
-                  <div class="text-left ml-3">
+                  <div class="text-center ml-3">
                     <p>{{ user.first_name }} {{ user.last_name}}
                       <br>
                       {{ profile.address1 }}, {{ profile.address2 }}
@@ -37,7 +56,6 @@
                     </p>
                   </div>
                 <hr>
-                <a class="btn btn-primary" href="{% url 'edit-profile' %}"> Update Profile</a>
             </div>
           </div>
         </div>

@@ -231,14 +231,36 @@ def register(request):
 
 @login_required
 def profile(request):
-    profile = Profile.objects.get(user=request.user)
-    orders = Order.objects.filter(user=request.user)
-    print(profile.image.url)
-    context = {
-        'profile' : profile,
-        'orders' : orders,
-    }
-    return render(request, 'backend/profile.html',context)
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+        profile = Profile.objects.get(user=request.user)
+        orders = Order.objects.filter(user=request.user)
+        context = {
+            'profile' : profile,
+            'orders' : orders,
+            'u_form' : u_form,
+            'p_form' : p_form
+        }
+        return render(request, 'backend/profile.html',context)
+    else:
+        profile = Profile.objects.get(user=request.user)
+        orders = Order.objects.filter(user=request.user)
+        print(profile.image.url)
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.profile)
+        context = {
+            'profile' : profile,
+            'orders' : orders,
+            'u_form' : u_form,
+            'p_form' : p_form
+        }
+        return render(request, 'backend/profile.html',context)
+
+    
 
 @login_required
 def update_profile(request):
