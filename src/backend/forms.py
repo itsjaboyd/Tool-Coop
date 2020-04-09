@@ -53,7 +53,7 @@ class UserUpdateForm(forms.ModelForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields =['address1', 'address2', 'city', 'state', 'phone']
+        fields =['address1', 'address2', 'city', 'state', 'image']
 		
 class ContactForm(forms.Form):
     contact_first_name = forms.CharField(required=True)

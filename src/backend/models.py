@@ -46,7 +46,7 @@ class ToolType(models.Model):
         print('save')
         print(self.image.path)
         img = Image.open(self.image.path)
-    
+        print
 
         if img.height > 300 or img.width > 300:
             output_size = (300, 300)

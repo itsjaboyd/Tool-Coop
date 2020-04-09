@@ -233,6 +233,7 @@ def register(request):
 def profile(request):
     profile = Profile.objects.get(user=request.user)
     orders = Order.objects.filter(user=request.user)
+    print(profile.image.url)
     context = {
         'profile' : profile,
         'orders' : orders,
@@ -349,14 +350,6 @@ def remove_single_tool_from_cart(request, slug):
     else:
         messages.info(request, "You do not have an active order.")
         return redirect("product", slug=slug)
-
-def get_remove_tool_from_inventory(self):
-        return reverse()
-def get_remove_single_tool_from_inventory(self):
-    return reverse()
-def get_add_tool_from_inventory(self):
-    tool = Tool.objects.create(tool_type=self, is_available=True)
-    return reverse()
 
 def contact(request):
     template = loader.get_template("backend/contact.html")
