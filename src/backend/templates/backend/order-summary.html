@@ -22,7 +22,7 @@
                         <td><a class='mx-1' href="{{ item.tool.get_absolute_url }}">{{ item.tool.type_name}}</a></td>
                         <td>
                             <a href="{{ item.tool.get_remove_single_from_cart_url }}" class=" btn btn-teal btn-rounded btn-sm my-3">-</a>
-                            <span class="my-1"><bold>{{ item.quantity}}</bold></span>
+                            <span class="my-1 px-4"><bold>{{ item.quantity}}</bold></span>
                             <a href="{{ item.tool.get_add_to_cart_url }}" class=" my-3 btn btn-blue btn-rounded btn-sm ">+</a>
                         </td>
                         <td class='mx-1'>{{ item.tool.get_available | length}}</td>
