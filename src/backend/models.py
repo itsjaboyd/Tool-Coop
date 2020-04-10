@@ -42,11 +42,10 @@ class ToolType(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = '-'.join(self.type_name.lower().split(" "))
-        super().save()
+        super().save(*args, **kwargs)
         print('save')
         print(self.image.path)
         img = Image.open(self.image.path)
-        print
 
         if img.height > 300 or img.width > 300:
             output_size = (300, 300)
