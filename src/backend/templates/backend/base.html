@@ -1,4 +1,4 @@
-{% load static %}
+﻿{% load static %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -79,8 +79,8 @@
               <a class="nav-link waves-effect" href="{% url 'orders' %}" >View Orders</a>
             </li>
             {% endif %}
+            {% endif %}
             <li class="nav-item">
-              {% endif %}
               <a class="nav-link waves-effect" href="{% url 'project' %}" >View Projects</a>
             </li>
 			      <li class="nav-item">
@@ -126,7 +126,6 @@
       </div>
     </nav>
     <!-- Navbar -->
-	<br><br><br><br>
 
     <div class="container">
       <div class="mt-5 pt-4">
@@ -148,9 +147,9 @@
     </div>
 
     <!--Begin Footer-->
-    <nav class="navbar navbar-expand-lg navbar-light white">
+    <nav class="navbar fixed-bottom navbar-expand-lg navbar-light white">
       <div class="container">
-        <div class="navbar-collapse justify-content-center" id="navbarSupportedContent">
+        <div class="navbar-collapse justify-content-center ml-5" id="navbarSupportedContent">
             <!-- Brand -->
             <a>© LIJJ 2020</a>
             <a class="navbar-brand waves-effect px-5" href="#" target="_blank">
@@ -162,6 +161,10 @@
       </div>
       <a class="test-right" href="{% url 'setup' %}">Setup</a>
     </nav>
+    <br />
+    <br />
+    <br />
+    <br />
     <!--End Footer-->
 
 

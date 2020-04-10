@@ -6,3 +6,6 @@ docs/.~lock.**
 .DS_Store
 
 db.sqlite3
+
+/.vs
+.vs

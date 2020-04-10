@@ -25,7 +25,7 @@ SECRET_KEY = 'qwxqo#o7-y4r&yb=scabq!0nqy(82g8fccxzu2z)4f0ng4$6e+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['django-env.eba-6x7gtnjy.us-west-1.elasticbeanstalk.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['sheltered-caverns-62486.herokuapp.com', 'localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
     'backend.apps.BackendConfig',
@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'toolshed.urls'
@@ -117,7 +118,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

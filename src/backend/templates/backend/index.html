@@ -24,7 +24,7 @@
     margin-right: 20px;
 }
 .xlight {
-    background-color: #f3f3f3;
+    background-color: white;
 }
 </style>
 <main class="mt-5 pt-4">
@@ -84,13 +84,18 @@
         <h1 class="display-4">The Projects.</h1>
         <p class="lead desc mh">Countless home remodels and individual projects have been completed with Our
             trustworthy tools. You cannot go wrong with completing your project with us.</p>
-        <a class="btn btn-sm btn-secondary m-3" href="{% url 'project' %}">Projects</a>
+        <img class="m-4" src="../../../media/HomeConstruction.jpg" width="400" />
+        <br />
+        <a class="btn btn-sm btn-secondary" href="{% url 'project' %}">Projects</a>
     </div>
 
     <div class="col text-center xlight soften mt-4 box-shadow p-4 mhs">
         <h1 class="display-4">Reach Out.</h1>
-        <p class="lead desc mh">We want to hear from you. If you have any questions about our tools or business,
-         please contact us using the contact page.</p>
+        <p class="lead desc mh">
+            We want to hear from you. If you have any questions about our tools or business,
+            please contact us using the contact page.
+        </p>
+        <img class="m-4" src="../../../media/OldMain.jpg" width="400" />
         <a class="btn btn-sm btn-secondary m-3" href="{% url 'contact' %}">Contact</a>
     </div>
 </div>
