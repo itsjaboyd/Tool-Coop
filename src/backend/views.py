@@ -39,7 +39,8 @@ def view_inventory(request):
             tool = ToolType.objects.get(type_name=tool_name)
             for x in range(quantity):
                 Tool.objects.create(tool_type=tool,is_available=True)
-            return redirect(request,"product", kwargs={'slug':tool.slug})
+            print('save finished')
+            return redirect('/products/'+ str(tool.slug))
         else:
             print(form.errors.values)
             tools = ToolType.objects.all()
@@ -125,9 +126,8 @@ class AdminOrderSummaryView(DetailView):
         try:
             print(kwargs['id'])
             order = Order.objects.get(pk=kwargs['id'])
-            o_form = CheckoutForm()
+            o_form = CheckoutForm(initial={ 'start_date': datetime.today })
             p_form = ProfileUpdateForm()
-            o_form.instance.start_date = datetime.today
             context=  {
                 'object': order,
                 'o_form': o_form
@@ -145,15 +145,17 @@ class AdminOrderSummaryView(DetailView):
             order.reservation_date = datetime.today()
             order.checkout_date = datetime.today()
             order.due_date = form.cleaned_data['end_date']
+            if not order.is_reserved:
+                for item in order.items.all():
+                    for x in range(item.quantity):
+                        tool_item = Tool.objects.filter(tool_type = item.tool, is_available=True)[0]
+                        tool_item.is_available = False
+                        tool_item.save()
+                    item.is_reserved = True
+                    item.is_checked_out = True
+                    item.save()
             order.is_reserved = True
             order.is_checked_out =True
-            for item in order.items.all():
-                item.is_reserved = True
-                item.is_checked_out = True
-                for x in range(item.quantity):
-                    tool_item = Tool.objects.filter(tool_type = item.tool, is_available=True)[0]
-                    tool_item.is_available = False
-                    tool_item.save()
             order.save()
             messages.info(self.request, "Checkout Completed!")
             return redirect('index')
