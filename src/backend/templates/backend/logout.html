@@ -1,11 +1,17 @@
 {% extends "backend/base.html" %}
 {% block content %}
-<div style="padding-left: 140px;">
-  <h1>You have been logged out</h1>
-  <div>
-      <medium class="text-muted">
-         <a class="ml-1" href="{% url 'login'%}">Sign In Again</a>
-      </medium>
-  </div>
+<style>
+    .center {
+        padding: 250px 0;
+        text-align: center;
+    }
+</style>
+
+<div>
+  <div class="center">
+      <h1 class="display-4">You have been logged out.</h1>
+      <br />
+      <a class="btn" href="{% url 'login'%}">Sign In Again</a>
+  </>
 </div>
 {% endblock content %}

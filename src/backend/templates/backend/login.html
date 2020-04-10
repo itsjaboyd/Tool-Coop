@@ -1,16 +1,26 @@
 {% extends "backend/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-  <div class="container">
+
+<style>
+    .add-pad {
+        padding: 100px;
+    }
+</style>
+
+  <div class="container add-pad">
     <form method="POST">
         {% csrf_token %}
       <fieldset class="form-group">
         <legend class="border-bottom mb-4">Log In</legend>
         {{form|crispy}}
       </fieldset>
-      <button type="submit" onclick="getContent()" class="btn btn-primary">Log In</button>
+
+        <div class="text-center">
+            <button type="submit" onclick="getContent()" class="btn btn-primary">Log In</button>
+        </div>
     </form>
-    <div>
+    <div class="text-center">
         <small>
             Need an Account? <a class="ml-2" href="{% url 'register' %}">Sign Up Now</a>
         </small>
