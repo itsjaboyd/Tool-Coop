@@ -6,7 +6,10 @@
     <div class="container mt-4">
       <!--Section: Products v.3-->
       <section class="text-center mb-4">
-        <h1>Our Tools</h1>
+        <div class="jumbotron">
+          <h4 class="display-4">Our Tools</h4>
+          <p class="lead desc">Browse our collection of the finest tools and instruments.</p>
+        </div>
         {% if user.is_superuser %}
           <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal">
             Add Tool
