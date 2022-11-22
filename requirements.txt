@@ -17,7 +17,7 @@ gunicorn==20.0.4
 idna==2.9
 image==1.5.28
 phonenumbers==8.12.0
-Pillow==7.0.0
+Pillow==9.3.0
 pprintpp==0.4.0
 psycopg2==2.8.5
 pycparser==2.20
